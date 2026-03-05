@@ -209,8 +209,8 @@ messages.forEach(m=>addMessageToChat(m.user,m.text,m.own))
 }
 if(page==="profile"&&currentUser){
 let users=JSON.parse(localStorage.getItem("users")||"{}")
-let data=users[currentUser]
-document.getElementById("profileDetails").innerHTML=`Username: ${currentUser}<br>${data.email?`Email: ${data.email}<br>`:""}${data.discord?`Discord: ${data.discord}<br>`:""}Bio: ${data.bio||""}`
+let data=users[currentUser]||{}
+document.getElementById("profileDetails").innerHTML=`Username: ${currentUser}<br>${data.email?`Email: ${data.email}<br>`:""}${data.discord?`Discord: ${data.discord}<br>`:""}Bio: ${data.bio||"No bio set"}`
 document.getElementById("pointsDisplay").innerText=userPoints
 document.getElementById("editBio").value=data.bio||""
 }
@@ -328,8 +328,7 @@ if(!u||!p)return
 let users=JSON.parse(localStorage.getItem("users")||"{}")
 if(mode==="signup"){
 if(users[u]){alert("Username already taken");return}
-if(!d){alert("Please enter your Discord username");return}
-users[u]={password:p,email:e||null,discord:d,bio:b,permission:document.getElementById("emailPermission").checked,points:0}
+users[u]={password:p,email:e||null,discord:d||null,bio:b||"",permission:document.getElementById("emailPermission").checked,points:0}
 localStorage.setItem("users",JSON.stringify(users))
 currentUser=u
 userPoints=0
@@ -359,7 +358,7 @@ saveSession()
 function saveSession(){
 if(currentUser){
 localStorage.setItem("currentUser",currentUser)
-localStorage.setItem("userPoints",userPoints)
+localStorage.setItem("userPoints",userPoints.toString())
 localStorage.setItem("userBio",userBio)
 }
 }
