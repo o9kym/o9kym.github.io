@@ -33,18 +33,28 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 .text-label{font-size:13.5px;color:rgba(255,255,255,.85);cursor:pointer}
 .text-label a{color:#c89eff;text-decoration:none}
 .text-label a:hover{text-decoration:underline}
-.fun-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;margin:3rem 0}
-.fun-card{background:rgba(40,30,60,.4);border:1px solid rgba(180,120,255,.15);border-radius:18px;padding:28px;text-align:center;transition:all .4s}
-.fun-card:hover{transform:translateY(-8px);box-shadow:0 18px 45px rgba(0,0,0,.55)}
-.fun-card h4{margin:1rem 0;font-size:1.3rem;color:#c89eff}
-.fun-card p{font-size:1.05rem;line-height:1.6}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px;margin:3rem 0}
+.profile-card{background:rgba(40,30,60,.4);border:1px solid rgba(180,120,255,.15);border-radius:18px;padding:28px;text-align:center;transition:all .4s}
+.profile-card:hover{transform:translateY(-8px);box-shadow:0 18px 45px rgba(0,0,0,.55)}
+.profile-card h4{margin:1rem 0;font-size:1.3rem;color:#c89eff}
+.profile-card p{font-size:1.05rem;line-height:1.6}
+.chat-area{background:rgba(40,30,60,.3);border:1px solid rgba(180,120,255,.15);border-radius:20px;padding:24px;max-width:900px;margin:3rem auto;height:400px;overflow-y:auto}
+.chat-area p{text-align:center;opacity:.8;padding:2rem}
+.message{display:flex;align-items:flex-start;margin:1rem 0}
+.message.own{justify-content:flex-end}
+.message-bubble{background:rgba(180,120,255,.2);padding:12px 18px;border-radius:18px;max-width:70%;word-wrap:break-word}
+.message.own .message-bubble{background:rgba(155,76,255,.35)}
+.message-user{font-weight:600;color:#c89eff;margin-bottom:4px}
+.message-time{font-size:.8rem;opacity:.6}
+.input-area{display:flex;margin-top:1rem}
+#chatInput{flex:1;padding:14px;border:none;border-radius:14px;background:rgba(255,255,255,.06);color:#fff;font-size:16px}
+#chatInput:focus{outline:none;background:rgba(255,255,255,.12)}
+#sendBtn{width:80px;margin-left:12px;background:linear-gradient(90deg,#9b4dff,#ff6ec7);border:none;border-radius:14px;color:#fff;cursor:pointer}
 .warning-box,.info-box,.rewards-box{background:rgba(40,30,60,.3);border:1px solid rgba(180,120,255,.1);padding:36px;border-radius:22px;max-width:860px;margin:3rem auto;transition:all .4s}
 .warning-box h3,.info-box h3,.rewards-box h3{color:#c89eff;margin-bottom:1.5rem;font-size:1.7rem}
 .warning-box p,.info-box p,.rewards-box p{font-size:1.08rem;line-height:1.75;margin:1.1rem 0}
 .discord-btn{display:block;width:260px;margin:4rem auto;cursor:pointer;transition:all .4s;border-radius:20px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.45)}
 .discord-btn:hover{transform:scale(1.1);box-shadow:0 24px 60px rgba(155,76,255,.45)}
-.chat-area{background:rgba(40,30,60,.3);border:1px solid rgba(180,120,255,.15);border-radius:20px;padding:24px;max-width:900px;margin:3rem auto;min-height:300px}
-.chat-area p{text-align:center;opacity:.8;padding:2rem}
 .footer{text-align:center;padding:120px 20px 160px;font-size:.95rem;opacity:.55}
 .snowflake{position:fixed;top:-20px;width:7px;height:7px;background:#fff;border-radius:50%;pointer-events:none;z-index:0;opacity:.7;animation:snowfall linear infinite}
 @keyframes snowfall{0%{transform:translateY(-20px) translateX(0) rotate(0deg)}100%{transform:translateY(110vh) translateX(40px) rotate(360deg)}}
@@ -57,7 +67,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <span onclick="navigate('home')">Home</span>
 <span onclick="navigate('robux')">Robux</span>
 <span onclick="navigate('rewards')">Rewards</span>
-<span onclick="navigate('fun')">Community</span>
+<span onclick="navigate('community')">Community</span>
 <span onclick="navigate('profile')">My Profile</span>
 <span onclick="navigate('auth')">Login</span>
 </div>
@@ -107,43 +117,22 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <div class="item-grid" id="shopItems"></div>
 </div>
 
-<div id="fun" class="page">
+<div id="community" class="page">
 <div class="rewards-box">
-<h3>Community Features</h3>
-<p>As a guest you can browse the site join our Discord and look at rewards.</p>
-<p>To chat with other users post in media channel enter raffles claim items or transfer Robux you need an account. Its quick and links to your Discord so we can track activity and give points for chatting.</p>
-<p>The more you chat the more points you earn automatically.</p>
+<h3>Community</h3>
+<p>View member profiles see bios and chat with other users right here. Points are given for activity in Discord general channel.</p>
+<p>Only logged in members can chat post profiles or view full details.</p>
 </div>
 
-<div class="fun-grid">
-<div class="fun-card">
-<h4>Member Chat</h4>
-<p>Logged in users can talk directly here with others share tips discuss games or just hang out.</p>
-</div>
-<div class="fun-card">
-<h4>Media Sharing</h4>
-<p>Post your Roblox screenshots funny clips or creations. Best ones get featured and bonus points.</p>
-</div>
-<div class="fun-card">
-<h4>Daily Login Rewards</h4>
-<p>Log in every day for free points. Longer streaks give bigger rewards.</p>
-</div>
-<div class="fun-card">
-<h4>Weekly Raffles</h4>
-<p>Automatic entry when logged in and active. Win Robux or limiteds each week.</p>
-</div>
-<div class="fun-card">
-<h4>Activity Leaderboard</h4>
-<p>See whos most active and earn extra points for top spots every month.</p>
-</div>
-<div class="fun-card">
-<h4>Simple Quests</h4>
-<p>Easy tasks like share a screenshot or invite a friend for instant points.</p>
-</div>
-</div>
+<div class="profile-grid" id="profiles"></div>
 
-<div class="chat-area">
+<div class="chat-area" id="chatArea">
 <p>Chat is only available for logged in members. Sign in to join the conversation.</p>
+</div>
+
+<div class="input-area" id="chatInputArea" style="display:none">
+<input id="chatInput" placeholder="Type a message...">
+<button id="sendBtn" onclick="sendMessage()">Send</button>
 </div>
 </div>
 
@@ -153,6 +142,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <input id="authUser" placeholder="Username">
 <input id="authPass" type="password" placeholder="Password">
 <input id="authDiscord" placeholder="Discord Username#0000" style="display:none">
+<input id="authBio" placeholder="Short bio (optional)" style="display:none">
 <input id="authEmail" placeholder="Email (optional)" style="display:none">
 
 <div id="termsLabel" class="checkbox-container" style="display:none">
@@ -180,6 +170,8 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <h2>Your Profile</h2>
 <p id="profileDetails" style="font-size:1.1rem;line-height:1.7"></p>
 <p>Your Points: <span id="pointsDisplay">0</span></p>
+<textarea id="editBio" placeholder="Update your bio..." style="width:100%;height:80px;margin:1rem 0;padding:12px;border-radius:12px;background:rgba(255,255,255,.06);color:#fff;border:none"></textarea>
+<button onclick="saveBio()">Save Bio</button>
 <button onclick="logout()">Logout</button>
 </div>
 </div>
@@ -190,6 +182,8 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 let currentUser=null
 let mode="login"
 let userPoints=0
+let userBio=""
+let messages=[]
 
 const webhook="https://discord.com/api/webhooks/1478939104266682379/IebkvFHpeccFN6-PNVoCCgBMZ7heW9ljO9dGg4k9rn2elcbGQENSMGp9LUiOpV3wiUJx"
 
@@ -201,17 +195,25 @@ const shopItems=[
 ]
 
 function navigate(page){
-if((page==="robux"||page==="profile"||page==="rewards"||page==="fun")&&!currentUser&&page!=="home")page="auth"
+if((page==="robux"||page==="profile"||page==="rewards"||page==="community")&&!currentUser&&page!=="home")page="auth"
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
 document.getElementById(page).classList.add("active")
 if(page==="robux")renderRobuxPage()
 if(page==="rewards")renderShop()
+if(page==="community"&&currentUser){
+renderProfiles()
+document.getElementById("chatInputArea").style.display="flex"
+document.getElementById("chatArea").innerHTML=""
+messages.forEach(m=>addMessageToChat(m.user,m.text,m.own))
+}
 if(page==="profile"&&currentUser){
 let users=JSON.parse(localStorage.getItem("users")||"{}")
 let data=users[currentUser]
-document.getElementById("profileDetails").innerText=`Username: ${currentUser}${data.email?`\nEmail: ${data.email}`:""}${data.discord?`\nDiscord: ${data.discord}`:""}`
+document.getElementById("profileDetails").innerHTML=`Username: ${currentUser}<br>${data.email?`Email: ${data.email}<br>`:""}${data.discord?`Discord: ${data.discord}<br>`:""}Bio: ${data.bio||""}`
 document.getElementById("pointsDisplay").innerText=userPoints
+document.getElementById("editBio").value=data.bio||""
 }
+loadSession()
 }
 
 function renderRobuxPage(){
@@ -250,7 +252,51 @@ item.stock--
 alert(`You claimed ${item.name}! We will get it to you soon.`)
 renderShop()
 if(document.getElementById("pointsDisplay"))document.getElementById("pointsDisplay").innerText=userPoints
+saveSession()
 }
+}
+
+function renderProfiles(){
+const grid=document.getElementById("profiles")
+grid.innerHTML=""
+let users=JSON.parse(localStorage.getItem("users")||"{}")
+Object.keys(users).forEach(u=>{
+if(u===currentUser)return
+let data=users[u]
+const card=document.createElement("div")
+card.className="profile-card"
+card.innerHTML=`
+<h4>${u}</h4>
+<p>Discord: ${data.discord||"?"}</p>
+<p>Bio: ${data.bio||"No bio set"}</p>
+<p>Points: ${data.points||0}</p>
+`
+grid.appendChild(card)
+})
+}
+
+function sendMessage(){
+let input=document.getElementById("chatInput")
+let text=input.value.trim()
+if(!text)return
+let msg={user:currentUser,text:text,own:true,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}
+messages.push(msg)
+addMessageToChat(currentUser,text,true)
+input.value=""
+fetch(webhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({content:`Chat message from ${currentUser}: ${text}`})})
+}
+
+function addMessageToChat(user,text,own=false){
+let area=document.getElementById("chatArea")
+let div=document.createElement("div")
+div.className=`message${own?" own":""}`
+div.innerHTML=`
+<div class="message-user">${user}</div>
+<div class="message-bubble">${text}</div>
+<div class="message-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+`
+area.appendChild(div)
+area.scrollTop=area.scrollHeight
 }
 
 function toggleMode(){
@@ -258,6 +304,7 @@ mode=mode==="login"?"signup":"login"
 document.getElementById("authTitle").innerText=mode==="login"?"Login":"Create Account"
 document.getElementById("authEmail").style.display=mode==="signup"?"block":"none"
 document.getElementById("authDiscord").style.display=mode==="signup"?"block":"none"
+document.getElementById("authBio").style.display=mode==="signup"?"block":"none"
 document.getElementById("termsLabel").style.display=mode==="signup"?"flex":"none"
 updateButtonState()
 }
@@ -276,27 +323,63 @@ let u=document.getElementById("authUser").value.trim()
 let p=document.getElementById("authPass").value
 let e=document.getElementById("authEmail").value.trim()
 let d=document.getElementById("authDiscord").value.trim()
+let b=document.getElementById("authBio").value.trim()
 if(!u||!p)return
 let users=JSON.parse(localStorage.getItem("users")||"{}")
 if(mode==="signup"){
 if(users[u]){alert("Username already taken");return}
 if(!d){alert("Please enter your Discord username");return}
-users[u]={password:p,email:e||null,discord:d,permission:document.getElementById("emailPermission").checked,points:0}
+users[u]={password:p,email:e||null,discord:d,bio:b,permission:document.getElementById("emailPermission").checked,points:0}
 localStorage.setItem("users",JSON.stringify(users))
 currentUser=u
 userPoints=0
+userBio=b
 fetch(webhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({content:`New signup: ${u} | Discord: ${d}`})})
 }else{
 if(!users[u]||users[u].password!==p){alert("Wrong username or password");return}
 currentUser=u
 userPoints=users[u].points||0
+userBio=users[u].bio||""
 }
+saveSession()
 navigate("home")
 }
 
+function saveBio(){
+let b=document.getElementById("editBio").value.trim()
+if(currentUser){
+let users=JSON.parse(localStorage.getItem("users")||"{}")
+users[currentUser].bio=b
+localStorage.setItem("users",JSON.stringify(users))
+userBio=b
+alert("Bio updated")
+}
+}
+
+function saveSession(){
+if(currentUser){
+localStorage.setItem("currentUser",currentUser)
+}
+}
+
+function loadSession(){
+let saved=localStorage.getItem("currentUser")
+if(saved){
+let users=JSON.parse(localStorage.getItem("users")||"{}")
+if(users[saved]){
+currentUser=saved
+userPoints=users[saved].points||0
+userBio=users[saved].bio||""
+navigate("home")
+}
+}
+}
+
 function logout(){
+localStorage.removeItem("currentUser")
 currentUser=null
 userPoints=0
+userBio=""
 navigate("home")
 }
 
@@ -327,6 +410,8 @@ document.getElementById("authUser").addEventListener("input",updateButtonState)
 document.getElementById("authPass").addEventListener("input",updateButtonState)
 document.getElementById("authDiscord").addEventListener("input",updateButtonState)
 document.getElementById("termsAgree")?.addEventListener("change",updateButtonState)
+
+loadSession()
 </script>
 </body>
 </html>
