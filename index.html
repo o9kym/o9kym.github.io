@@ -8,7 +8,7 @@
 <style>
 :root{--primary:#c084fc;--primary-dark:#a855f7;--glow:#d8b4fe;--bg-start:#05000a;--bg-end:#140022}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;background:linear-gradient(135deg,var(--bg-start),var(--bg-end));color:white;display:flex;justify-content:center;align-items:center;overflow:hidden;position:relative}
+body{font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;background:linear-gradient(135deg,var(--bg-start),var(--bg-end));color:white;display:flex;justify-content:center;align-items:center;overflow:hidden;position:relative;flex-direction:column}
 .snow-container{position:absolute;inset:0;pointer-events:none;z-index:0}
 .snowflake{position:absolute;top:-12px;width:5px;height:5px;background:rgba(255,255,255,0.9);border-radius:50%;box-shadow:0 0 6px rgba(255,255,255,0.7);animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(110vh)}}
@@ -30,6 +30,7 @@ button:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(168,85,247,0
 .modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:100}
 .modal-content{background:rgba(30,10,50,0.95);padding:32px;border-radius:20px;text-align:center;width:360px;max-width:90vw}
 .modal button{margin-top:20px;width:50%;cursor:pointer}
+footer{margin-top:20px;font-size:0.85rem;color:white}
 </style>
 </head>
 <body>
@@ -59,6 +60,7 @@ button:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(168,85,247,0
 <button id="continueBtn">Continue</button>
 </div>
 </div>
+<footer>© 2026 BloxRewards. All Rights Reserved.</footer>
 <audio id="bgAudio" autoplay volume="0.3"></audio>
 <audio id="clickAudio" src="https://files.catbox.moe/k8frcq.mp3"></audio>
 <script>
@@ -70,13 +72,12 @@ const container=document.querySelector('.container')
 const msg=document.getElementById("message")
 let cooldown=false
 function createParticles(){for(let i=0;i<20;i++){const p=document.createElement('div');p.className='particle';const x=(Math.random()-0.5)*240+'px';const y=(Math.random()-1.5)*200+'px';p.style.setProperty('--x',x);p.style.setProperty('--y',y);container.appendChild(p);setTimeout(()=>p.remove(),1200)}}
-btn.onclick=()=>{if(cooldown)return;const user=document.getElementById("username").value.trim();const amount=document.getElementById("amount").value.trim();if(!user||!amount||isNaN(amount)||Number(amount)<=0){msg.textContent="Enter valid details";msg.classList.add("show");setTimeout(()=>{msg.classList.remove("show");msg.textContent="";},2000);return}msg.textContent="Submitted";msg.classList.add("show");createParticles();cooldown=true;setTimeout(()=>{cooldown=false;msg.classList.remove("show");msg.textContent="";},2500)}
+btn.onclick=()=>{clickAudio.play();if(cooldown)return;const user=document.getElementById("username").value.trim();const amount=document.getElementById("amount").value.trim();if(!user||!amount||isNaN(amount)||Number(amount)<=0){msg.textContent="Enter valid details";msg.classList.add("show");setTimeout(()=>{msg.classList.remove("show");msg.textContent="";},2000);return}msg.textContent="Submitted";msg.classList.add("show");createParticles();cooldown=true;setTimeout(()=>{cooldown=false;msg.classList.remove("show");msg.textContent="";},2500)}
 const titles=["BloxRewards 💰"]
-let tIndex=0
-const animatedTitle=document.getElementById("animatedTitle")
 let titleIndex=0
 let typing=true
 let displayText=""
+const animatedTitle=document.getElementById("animatedTitle")
 function typeTitle(){let full=titles[0];if(typing){displayText=full.slice(0,titleIndex+1);titleIndex++;if(titleIndex>full.length){typing=false;setTimeout(typeTitle,800);return}}else{displayText=full.slice(0,titleIndex-1);titleIndex--;if(titleIndex<=0){typing=true;setTimeout(typeTitle,400);return}}animatedTitle.textContent=displayText;document.title=displayText;setTimeout(typeTitle,120)}
 typeTitle()
 const playlist=["https://files.catbox.moe/uxnh67.mp3","https://files.catbox.moe/147r3s.mp3","https://files.catbox.moe/8zzmuk.mp3","https://files.catbox.moe/kizlt0.mp3"]
