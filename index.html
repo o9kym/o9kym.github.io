@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BloxRewards</title>
+<link rel="icon" href="https://files.catbox.moe/3lluys.png" type="image/png">
 <style>
 :root{--primary:#c084fc;--primary-dark:#a855f7;--glow:#d8b4fe;--bg-start:#05000a;--bg-end:#140022}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -25,13 +26,17 @@ button:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(168,85,247,0
 #message.show{opacity:1}
 .particle{position:absolute;width:6px;height:6px;background:var(--glow);border-radius:50%;pointer-events:none;animation:fly 1.2s ease-out forwards}
 @keyframes fly{0%{transform:translate(0,0) scale(1);opacity:0.9}100%{transform:translate(var(--x),var(--y)) scale(0.2);opacity:0}}
-#cornerImg{position:fixed;bottom:18px;right:18px;width:40px;height:40px;opacity:0.8;filter:drop-shadow(0 0 10px rgba(192,132,252,0.5));z-index:10}
+#trademark{position:fixed;bottom:18px;left:18px;font-size:1.2rem;color:#c084fc;opacity:0.8;z-index:10;font-weight:bold}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:100}
+.modal-content{background:rgba(30,10,50,0.95);padding:32px;border-radius:20px;text-align:center;width:360px;max-width:90vw}
+.modal button{margin-top:20px;width:50%;cursor:pointer}
 </style>
 </head>
 <body>
 <div class="snow-container" id="snow"></div>
-<div class="container">
-<h1 id="animatedTitle">BloxRewards</h1>
+<div id="trademark">C BloxRewards™</div>
+<div class="container" id="mainContainer">
+<h1 id="animatedTitle"></h1>
 <div class="input-group">
 <input id="username" placeholder=" " autocomplete="off">
 <span class="floating-label">Username</span>
@@ -43,8 +48,19 @@ button:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(168,85,247,0
 <button id="submitBtn">Get Robux</button>
 <div id="message"></div>
 </div>
-<img id="cornerImg" src="https://files.catbox.moe/qwz458.png" alt="logo">
+<div class="modal" id="startModal">
+<div class="modal-content">
+<h2>Before entering</h2>
+<p>It can take 5 minutes to 2 days for Robux to pend. You must have the required gamepass.</p>
+<div class="input-group">
+<input id="confirmInput" placeholder="Type CONFIRM to continue" autocomplete="off">
+<span class="floating-label">CONFIRM</span>
+</div>
+<button id="continueBtn">Continue</button>
+</div>
+</div>
 <audio id="bgAudio" autoplay volume="0.3"></audio>
+<audio id="clickAudio" src="https://files.catbox.moe/k8frcq.mp3"></audio>
 <script>
 const snowContainer=document.getElementById("snow")
 function createSnowflake(){const f=document.createElement('div');f.className='snowflake';f.style.left=Math.random()*100+'vw';f.style.animationDuration=(4+Math.random()*5)+'s';f.style.opacity=0.4+Math.random()*0.5;f.style.width=f.style.height=(4+Math.random()*5)+'px';snowContainer.appendChild(f);setTimeout(()=>f.remove(),9000)}
@@ -55,10 +71,14 @@ const msg=document.getElementById("message")
 let cooldown=false
 function createParticles(){for(let i=0;i<20;i++){const p=document.createElement('div');p.className='particle';const x=(Math.random()-0.5)*240+'px';const y=(Math.random()-1.5)*200+'px';p.style.setProperty('--x',x);p.style.setProperty('--y',y);container.appendChild(p);setTimeout(()=>p.remove(),1200)}}
 btn.onclick=()=>{if(cooldown)return;const user=document.getElementById("username").value.trim();const amount=document.getElementById("amount").value.trim();if(!user||!amount||isNaN(amount)||Number(amount)<=0){msg.textContent="Enter valid details";msg.classList.add("show");setTimeout(()=>{msg.classList.remove("show");msg.textContent="";},2000);return}msg.textContent="Submitted";msg.classList.add("show");createParticles();cooldown=true;setTimeout(()=>{cooldown=false;msg.classList.remove("show");msg.textContent="";},2500)}
-const titles=["BloxRewards","BloxRewards ✨","BloxRewards 💎","BloxRewards 💰"]
+const titles=["BloxRewards 💰"]
 let tIndex=0
 const animatedTitle=document.getElementById("animatedTitle")
-setInterval(()=>{document.title=titles[tIndex];animatedTitle.textContent=titles[tIndex];tIndex=(tIndex+1)%titles.length},800)
+let titleIndex=0
+let typing=true
+let displayText=""
+function typeTitle(){let full=titles[0];if(typing){displayText=full.slice(0,titleIndex+1);titleIndex++;if(titleIndex>full.length){typing=false;setTimeout(typeTitle,800);return}}else{displayText=full.slice(0,titleIndex-1);titleIndex--;if(titleIndex<=0){typing=true;setTimeout(typeTitle,400);return}}animatedTitle.textContent=displayText;document.title=displayText;setTimeout(typeTitle,120)}
+typeTitle()
 const playlist=["https://files.catbox.moe/uxnh67.mp3","https://files.catbox.moe/147r3s.mp3","https://files.catbox.moe/8zzmuk.mp3","https://files.catbox.moe/kizlt0.mp3"]
 let current=0
 const audio=document.getElementById("bgAudio")
@@ -67,6 +87,11 @@ audio.loop=false
 audio.volume=0.3
 audio.play()
 audio.onended=()=>{current=(current+1)%playlist.length;audio.src=playlist[current];audio.play()}
+const startModal=document.getElementById("startModal")
+const continueBtn=document.getElementById("continueBtn")
+const confirmInput=document.getElementById("confirmInput")
+const clickAudio=document.getElementById("clickAudio")
+continueBtn.onclick=()=>{if(confirmInput.value.trim().toUpperCase()==="CONFIRM"){clickAudio.play();startModal.style.display="none"}}
 </script>
 </body>
 </html>
