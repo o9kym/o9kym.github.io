@@ -33,32 +33,16 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 .text-label{font-size:13.5px;color:rgba(255,255,255,.85);cursor:pointer}
 .text-label a{color:#c89eff;text-decoration:none}
 .text-label a:hover{text-decoration:underline}
-.item-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;margin:3rem 0}
-.item-card{background:rgba(40,30,60,.4);border:1px solid rgba(180,120,255,.15);border-radius:18px;padding:24px;text-align:center;transition:all .4s}
-.item-card:hover{transform:translateY(-8px);box-shadow:0 18px 45px rgba(0,0,0,.55)}
-.item-card.unavailable{opacity:.48;filter:grayscale(90%);pointer-events:none}
-.item-card img{width:140px;height:140px;object-fit:contain;border-radius:14px;margin-bottom:16px;background:rgba(0,0,0,.35);border:1px solid rgba(180,120,255,.2)}
-.item-card h4{margin:.6rem 0;font-size:1.15rem}
-.item-card p.points{font-size:1rem;color:#c89eff;font-weight:500}
-.item-card p.stock{font-size:.95rem;margin:.4rem 0}
-.item-card button{margin-top:14px;padding:10px 24px;font-size:1rem}
-.task-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin:3rem 0}
-.task-card{background:rgba(40,30,60,.35);border:1px solid rgba(180,120,255,.18);border-radius:18px;padding:28px;text-align:center;transition:all .4s}
-.task-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
-.task-card h4{font-size:1.25rem;margin-bottom:.8rem}
-.task-card p{font-size:1.05rem;line-height:1.5;margin-bottom:1.2rem}
-.task-card button{padding:12px 28px;font-size:1rem}
+.fun-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;margin:3rem 0}
+.fun-card{background:rgba(40,30,60,.4);border:1px solid rgba(180,120,255,.15);border-radius:18px;padding:28px;text-align:center;transition:all .4s}
+.fun-card:hover{transform:translateY(-8px);box-shadow:0 18px 45px rgba(0,0,0,.55)}
+.fun-card h4{margin:1rem 0;font-size:1.3rem;color:#c89eff}
+.fun-card p{font-size:1.05rem;line-height:1.6}
 .warning-box,.info-box,.rewards-box{background:rgba(40,30,60,.3);border:1px solid rgba(180,120,255,.1);padding:36px;border-radius:22px;max-width:860px;margin:3rem auto;transition:all .4s}
 .warning-box h3,.info-box h3,.rewards-box h3{color:#c89eff;margin-bottom:1.5rem;font-size:1.7rem}
 .warning-box p,.info-box p,.rewards-box p{font-size:1.08rem;line-height:1.75;margin:1.1rem 0}
 .discord-btn{display:block;width:260px;margin:4rem auto;cursor:pointer;transition:all .4s;border-radius:20px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.45)}
 .discord-btn:hover{transform:scale(1.1);box-shadow:0 24px 60px rgba(155,76,255,.45)}
-.faq{margin-top:5rem}
-.faq h2{text-align:center;margin-bottom:3rem;font-size:2.2rem}
-.faq-item{background:rgba(40,30,60,.25);padding:24px 30px;border-radius:18px;margin-bottom:20px;border:1px solid rgba(180,120,255,.08);transition:all .3s}
-.faq-item:hover{transform:translateY(-4px)}
-.faq-item h3{margin:0;font-size:1.2rem;cursor:pointer;color:#e0d0ff}
-.faq-item p{margin-top:16px;font-size:1.05rem;line-height:1.7;opacity:.92;display:none}
 .footer{text-align:center;padding:120px 20px 160px;font-size:.95rem;opacity:.55}
 .snowflake{position:fixed;top:-20px;width:7px;height:7px;background:#fff;border-radius:50%;pointer-events:none;z-index:0;opacity:.7;animation:snowfall linear infinite}
 @keyframes snowfall{0%{transform:translateY(-20px) translateX(0) rotate(0deg)}100%{transform:translateY(110vh) translateX(40px) rotate(360deg)}}
@@ -71,7 +55,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <span onclick="navigate('home')">Home</span>
 <span onclick="navigate('robux')">Robux</span>
 <span onclick="navigate('rewards')">Rewards</span>
-<span onclick="navigate('tasks')">Earn Points</span>
+<span onclick="navigate('fun')">Fun Stuff</span>
 <span onclick="navigate('profile')">My Profile</span>
 <span onclick="navigate('auth')">Login</span>
 </div>
@@ -121,14 +105,40 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <div class="item-grid" id="shopItems"></div>
 </div>
 
-<div id="tasks" class="page">
+<div id="fun" class="page">
 <div class="rewards-box">
-<h3>Earn Points - Fun Ways</h3>
-<p>Your current balance: <strong><span id="tasksPoints">0</span> points</strong></p>
-<p>Complete these simple tasks to earn points fast. Some refresh daily, others are one-time.</p>
+<h3>Fun Things to Do</h3>
+<p>As a guest you can look around browse the home page see the rewards shop and join our Discord to chat or enter giveaways.</p>
+<p>But to do the real stuff like transfer Robux claim rewards from the shop post in our media channel or join private events you need to make a quick account. Its free and takes 10 seconds.</p>
+<p>Logged in members get way more to play with including:</p>
 </div>
 
-<div class="task-grid" id="taskList"></div>
+<div class="fun-grid">
+<div class="fun-card">
+<h4>Media Channel</h4>
+<p>Share your Roblox screenshots memes funny clips or anything cool you made. Everyone sees it and we sometimes feature the best ones with bonus points.</p>
+</div>
+<div class="fun-card">
+<h4>Daily Login Bonus</h4>
+<p>Come back every day to claim free points. The streak gets bigger rewards the longer you keep it going.</p>
+</div>
+<div class="fun-card">
+<h4>Quick Quests</h4>
+<p>Simple tasks like join a game with friends react to 10 messages or invite someone new. Finish them for instant points.</p>
+</div>
+<div class="fun-card">
+<h4>Robux Raffles</h4>
+<p>Enter free raffles every week just by being logged in and active. Winners get Robux straight to their account.</p>
+</div>
+<div class="fun-card">
+<h4>Leaderboard Battles</h4>
+<p>Compete on the monthly leaderboard for most points or most transfers. Top spots get huge rewards and bragging rights.</p>
+</div>
+<div class="fun-card">
+<h4>Custom Avatars</h4>
+<p>Unlock special profile badges and colors the more points and activity you have.</p>
+</div>
+</div>
 </div>
 
 <div id="auth" class="page">
@@ -162,7 +172,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <div class="card">
 <h2>Your Profile</h2>
 <p id="profileDetails" style="font-size:1.1rem;line-height:1.7"></p>
-<p>Your Points Balance: <strong><span id="pointsDisplay">0</span></strong></p>
+<p>Your Points: <span id="pointsDisplay">0</span></p>
 <button onclick="logout()">Logout</button>
 </div>
 </div>
@@ -181,22 +191,12 @@ const shopItems=[
 {id:4,name:"Green Queen of the Night",icon:"https://files.catbox.moe/0elkfl.jpeg",points:22000,stock:4}
 ]
 
-const tasks=[
-{id:1,name:"Join our Discord",desc:"Hop into the server and say hi in general chat",reward:500,completed:false,type:"once"},
-{id:2,name:"Invite 3 friends",desc:"Bring 3 new people to the Discord (they need to verify)",reward:1200,completed:false,type:"once"},
-{id:3,name:"Daily Login Bonus",desc:"Just come back today and claim",reward:300,completed:false,type:"daily"},
-{id:4,name:"Chat for 30 mins",desc:"Be active in voice or text chat today",reward:400,completed:false,type:"daily"},
-{id:5,name:"Post a meme",desc:"Share a funny Roblox meme in memes channel",reward:250,completed:false,type:"daily"},
-{id:6,name:"Refer a transfer",desc:"Get a friend to complete their first Robux transfer",reward:2000,completed:false,type:"once"}
-]
-
 function navigate(page){
-if((page==="robux"||page==="profile")&&!currentUser)page="auth"
+if((page==="robux"||page==="profile"||page==="rewards")&&!currentUser&&page!=="home")page="auth"
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
 document.getElementById(page).classList.add("active")
 if(page==="robux")renderRobuxPage()
 if(page==="rewards")renderShop()
-if(page==="tasks")renderTasks()
 if(page==="profile"&&currentUser){
 let users=JSON.parse(localStorage.getItem("users")||"{}")
 let data=users[currentUser]
@@ -231,36 +231,6 @@ grid.appendChild(card)
 })
 }
 
-function renderTasks(){
-document.getElementById("tasksPoints").innerText=userPoints
-const list=document.getElementById("taskList")
-list.innerHTML=""
-tasks.forEach(task=>{
-const card=document.createElement("div")
-card.className="task-card"
-card.innerHTML=`
-<h4>${task.name}</h4>
-<p>${task.desc}</p>
-<p>Reward: <strong>${task.reward} points</strong></p>
-${task.completed?`<button disabled style="background:#555">Already Done</button>`:`<button onclick="completeTask(${task.id})">Claim Reward</button>`}
-`
-list.appendChild(card)
-})
-}
-
-function completeTask(id){
-const task=tasks.find(t=>t.id===id)
-if(!task||!task.completed){
-task.completed=true
-userPoints+=task.reward
-alert(`Nice! You earned ${task.reward} points for "${task.name}"`)
-renderTasks()
-if(document.getElementById("pointsDisplay"))document.getElementById("pointsDisplay").innerText=userPoints
-if(document.getElementById("tasksPoints"))document.getElementById("tasksPoints").innerText=userPoints
-saveUserData()
-}
-}
-
 function claimItem(id){
 const item=shopItems.find(i=>i.id===id)
 if(!item||item.stock<=0)return alert("Sorry that item is out of stock right now")
@@ -271,17 +241,6 @@ item.stock--
 alert(`You claimed ${item.name}! We will get it to you soon.`)
 renderShop()
 if(document.getElementById("pointsDisplay"))document.getElementById("pointsDisplay").innerText=userPoints
-saveUserData()
-}
-}
-
-function saveUserData(){
-if(currentUser){
-let users=JSON.parse(localStorage.getItem("users")||"{}")
-if(users[currentUser]){
-users[currentUser].points=userPoints
-localStorage.setItem("users",JSON.stringify(users))
-}
 }
 }
 
