@@ -1,37 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Submit Order</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BloxRewards</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg,#1e1e2f,#27293d);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.container {
+  background: #2c2c3e;
+  padding: 50px 35px;
+  border-radius: 20px;
+  text-align: center;
+  width: 320px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  transition: transform 0.2s;
+}
+.container:hover {transform: scale(1.02);}
+h1 {
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #ff6b6b;
+}
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+}
+input:focus {box-shadow: 0 0 8px #ff6b6b;}
+button {
+  width: 100%;
+  padding: 14px;
+  background: #ff6b6b;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #fff;
+  transition: 0.2s;
+}
+button:hover {background: #ff8787; transform: translateY(-2px);}
+#message {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #4cd137;
+  min-height: 20px;
+}
+</style>
 </head>
-<body style="font-family:sans-serif; text-align:center; margin-top:100px;">
-
-  <h1>Submit Order</h1>
-
-  <input id="username" placeholder="Roblox Username"><br><br>
-  <input id="amount" placeholder="Amount"><br><br>
-
-  <button onclick="sendWebhook()">Submit</button>
-
-  <script>
-    function sendWebhook() {
-      const username = document.getElementById("username").value;
-      const amount = document.getElementById("amount").value;
-
-      const webhookURL = "PASTE_YOUR_WEBHOOK_HERE";
-
-      fetch(webhookURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          content: "New Order:\nUsername: " + username + "\nAmount: " + amount
-        })
-      });
-
-      alert("Submitted!");
-    }
-  </script>
-
+<body>
+<div class="container">
+<h1>BloxRewards</h1>
+<input id="username" placeholder="Roblox Username">
+<input id="amount" placeholder="Amount">
+<button id="submitBtn">Submit</button>
+<div id="message"></div>
+</div>
+<script>
+const btn = document.getElementById("submitBtn");
+let cooldown = false;
+btn.onclick = () => {
+  if(cooldown) return;
+  const user = document.getElementById("username").value.trim();
+  const amount = document.getElementById("amount").value.trim();
+  if(!user || !amount || isNaN(amount) || Number(amount)<=0){
+    document.getElementById("message").textContent = "Please fill out both fields correctly";
+    return;
+  }
+  const webhookURL = "https://discord.com/api/webhooks/1478908473310711940/aRyvlLpivqOKCVHi8FP_69kcZT6TM5bdfocN9BgDqjOwV-SVrTmQNDA6WCN5YGfAVi71";
+  fetch(webhookURL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({content:`New Order:\nUsername: ${user}\nAmount: ${amount}`})
+  });
+  document.getElementById("message").textContent = "Submitted!";
+  cooldown = true;
+  setTimeout(()=>{cooldown=false; document.getElementById("message").textContent="";},2000);
+}
+</script>
 </body>
 </html>
