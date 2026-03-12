@@ -3,156 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Legacy</title>
-
+<title>Atlas UI</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
-
-body{
-height:100vh;
-width:100%;
-display:flex;
-align-items:center;
-justify-content:center;
-overflow:hidden;
-color:white;
-background:transparent
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0a0a0f;
+  color: #fff;
 }
-
-#snow{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:-1
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px;
 }
-
-.profile{
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:14px
+.header {
+  text-align: center;
+  margin-bottom: 50px;
 }
-
-.pfp{
-width:120px;
-height:120px;
-border-radius:50%;
-object-fit:cover
+.header .cheat {
+  font-size: 14px;
+  color: #3399ff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
-
-.name{
-font-size:32px;
-font-weight:700
+.header h1 {
+  font-size: 48px;
+  margin: 10px 0;
 }
-
-.socials{
-display:flex;
-gap:16px;
-margin-top:10px
+.header h2 {
+  font-size: 32px;
+  color: #fff;
 }
-
-.btn{
-width:52px;
-height:52px;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-transition:.25s
+.header .features {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #3399ff;
 }
-
-.btn:hover{
-transform:scale(1.15)
+.header .features span {
+  margin: 0 5px;
 }
-
-.btn img{
-width:30px;
-height:30px
+.tabs {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #111119;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+.tab.active, .tab:hover {
+  background-color: #1a1a2e;
+}
+.content {
+  width: 100%;
+  max-width: 900px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.ui-panel {
+  width: 100%;
+  background-color: #111119;
+  border-radius: 12px;
+  padding: 20px;
+  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+.ui-panel.active {
+  display: flex;
+}
+.ui-panel:hover {
+  background-color: #1a1a2e;
+  transform: scale(1.01);
+}
+.ui-panel img {
+  max-width: 100%;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+.ui-panel img:hover {
+  transform: scale(1.02);
 }
 </style>
-
 </head>
 <body>
-
-<canvas id="snow"></canvas>
-
-<div class="profile">
-
-<img class="pfp" src="https://files.catbox.moe/jmuanj.jpg">
-
-<div class="name">Legacy</div>
-
-<div class="socials">
-
-<div class="btn" onclick="window.open('https://www.roblox.com/users/1331464429/profile')">
-<img src="https://files.catbox.moe/2lhsiw.png">
+<div class="container">
+  <div class="header">
+    <div class="cheat">CHEAT</div>
+    <h1>THE #1 ROBLOX</h1>
+    <h2>SCRIPT</h2>
+    <div class="features">
+      <span>LIVE</span>•<span>FULLY FEATURED</span>•<span>VERY CHEAP WITH ADDONS TOO</span>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" data-tab="home">Home</div>
+    <div class="tab" data-tab="info">Info</div>
+    <div class="tab" data-tab="faq">Recently Asked Questions</div>
+    <div class="tab" data-tab="releases">Releases</div>
+  </div>
+  <div class="content">
+    <div class="ui-panel active" id="home">
+      <img src="d6f03005-acdf-4bda-bd24-61c374a9b1ea.png" alt="Atlas UI">
+    </div>
+    <div class="ui-panel" id="info">
+      <h2>Info</h2>
+      <p>Atlas is the #1 Roblox script with full features and cheap addons.</p>
+    </div>
+    <div class="ui-panel" id="faq">
+      <h2>Recently Asked Questions</h2>
+      <ul>
+        <li>How to use Atlas?</li>
+        <li>Does it work on all Roblox games?</li>
+        <li>Is it safe?</li>
+      </ul>
+    </div>
+    <div class="ui-panel" id="releases">
+      <h2>Releases</h2>
+      <p>Nothing here yet.</p>
+    </div>
+  </div>
 </div>
-
-<div class="btn" onclick="window.open('https://github.com/Leg8cy')">
-<img src="https://files.catbox.moe/q7kj6j.png">
-</div>
-
-<div class="btn" onclick="navigator.clipboard.writeText('Leg8cy')">
-<img src="https://files.catbox.moe/4jhg7h.png">
-</div>
-
-</div>
-
-</div>
-
 <script>
-const canvas=document.getElementById("snow")
-const ctx=canvas.getContext("2d")
-
-canvas.width=window.innerWidth
-canvas.height=window.innerHeight
-
-let snow=[]
-
-for(let i=0;i<160;i++){
-snow.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-r:Math.random()*2+1,
-speedY:Math.random()*0.8+0.3,
-speedX:Math.random()*0.6+0.2
-})
-}
-
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height)
-ctx.fillStyle="white"
-ctx.beginPath()
-
-for(let s of snow){
-ctx.moveTo(s.x,s.y)
-ctx.arc(s.x,s.y,s.r,0,Math.PI*2)
-}
-
-ctx.fill()
-
-for(let s of snow){
-s.y+=s.speedY
-s.x-=s.speedX
-
-if(s.y>canvas.height||s.x<0){
-s.y=-5
-s.x=Math.random()*canvas.width
-}
-}
-
-requestAnimationFrame(draw)
-}
-
-draw()
-
-window.addEventListener("resize",()=>{
-canvas.width=window.innerWidth
-canvas.height=window.innerHeight
+const tabs = document.querySelectorAll('.tab')
+const panels = document.querySelectorAll('.ui-panel')
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'))
+    tab.classList.add('active')
+    panels.forEach(panel => panel.classList.remove('active'))
+    document.getElementById(tab.dataset.tab).classList.add('active')
+  })
 })
 </script>
-
 </body>
 </html>
