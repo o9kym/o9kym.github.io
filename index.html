@@ -1,1 +1,863 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #16161f;
+    --border: #1e1e2e;
+    --accent: #7c3aed;
+    --accent2: #a855f7;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #eab308;
+    --text: #e2e8f0;
+    --muted: #475569;
+    --dim: #1e293b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .titlebar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+  }
+
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.r { background: var(--red); }
+  .dot.y { background: var(--yellow); }
+  .dot.g { background: var(--green); }
+
+  .title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-left: 6px;
+  }
+
+  .status-pill {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    background: var(--dim);
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+
+  .status-pill.connected { color: var(--green); border-color: #22c55e44; background: #22c55e0a; }
+  .status-pill.connected .dot-live { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .status-pill.disconnected { color: var(--red); }
+  .status-pill.disconnected .dot-live { background: var(--red); }
+
+  .dot-live { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); transition: all 0.3s; }
+
+  .tabs-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    gap: 2px;
+    min-height: 38px;
+  }
+
+  .tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px 6px 0 0;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    cursor: pointer;
+    color: var(--muted);
+    border: 1px solid transparent;
+    border-bottom: none;
+    transition: all 0.15s;
+    white-space: nowrap;
+    position: relative;
+    top: 1px;
+  }
+
+  .tab:hover { color: var(--text); background: var(--surface2); }
+
+  .tab.active {
+    color: var(--accent2);
+    background: var(--bg);
+    border-color: var(--border);
+  }
+
+  .tab .close {
+    opacity: 0;
+    font-size: 10px;
+    color: var(--muted);
+    transition: opacity 0.15s;
+    line-height: 1;
+    padding: 1px 2px;
+    border-radius: 3px;
+  }
+
+  .tab:hover .close { opacity: 1; }
+  .tab .close:hover { background: var(--dim); color: var(--red); }
+
+  .new-tab {
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 16px;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+  .new-tab:hover { color: var(--text); background: var(--surface2); }
+
+  .main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .sidebar {
+    width: 200px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .sidebar-section {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 12px;
+    margin-bottom: 6px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+  }
+
+  .sidebar-item:hover { background: var(--surface2); color: var(--text); }
+  .sidebar-item.active { color: var(--accent2); background: #7c3aed0a; }
+
+  .sidebar-item .icon { font-size: 11px; width: 14px; text-align: center; flex-shrink: 0; }
+
+  .sidebar-scripts {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 0;
+  }
+
+  .sidebar-scripts::-webkit-scrollbar { width: 3px; }
+  .sidebar-scripts::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-scripts::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .editor-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .editor-wrapper {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .line-numbers {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 14px 8px;
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    user-select: none;
+    min-width: 42px;
+    overflow: hidden;
+    white-space: pre;
+  }
+
+  .editor {
+    flex: 1;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 14px 16px;
+    border: none;
+    resize: none;
+    outline: none;
+    overflow-y: auto;
+    tab-size: 4;
+    white-space: pre;
+    overflow-wrap: normal;
+  }
+
+  .editor::-webkit-scrollbar { width: 6px; }
+  .editor::-webkit-scrollbar-track { background: transparent; }
+  .editor::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .autocomplete-box {
+    position: absolute;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    z-index: 100;
+    min-width: 180px;
+    max-height: 180px;
+    overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    display: none;
+  }
+
+  .autocomplete-box::-webkit-scrollbar { width: 3px; }
+  .autocomplete-box::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .autocomplete-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    transition: background 0.1s;
+    color: var(--text);
+  }
+
+  .autocomplete-item:hover, .autocomplete-item.selected {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .autocomplete-item .tag {
+    font-size: 9px;
+    background: #7c3aed33;
+    color: var(--accent2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .autocomplete-item:hover .tag, .autocomplete-item.selected .tag {
+    background: #ffffff22;
+    color: #fff;
+  }
+
+  .toolbar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-execute {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-execute:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 4px 12px #7c3aed44; }
+  .btn-execute:active { transform: translateY(0); }
+
+  .btn-clear {
+    background: var(--dim);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-clear:hover { color: var(--text); background: var(--surface2); }
+
+  .btn-connect {
+    background: var(--dim);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-connect:hover { color: var(--green); border-color: #22c55e44; }
+  .btn-connect.active { color: var(--green); border-color: #22c55e44; background: #22c55e0a; }
+
+  .spacer { flex: 1; }
+
+  .ws-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+    outline: none;
+    width: 240px;
+    transition: border-color 0.2s;
+  }
+  .ws-input:focus { border-color: var(--accent); }
+  .ws-input::placeholder { color: var(--muted); }
+
+  .output-pane {
+    height: 130px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .output-header {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    gap: 8px;
+  }
+
+  .output-header .clear-btn {
+    margin-left: auto;
+    font-size: 10px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: color 0.15s;
+  }
+  .output-header .clear-btn:hover { color: var(--text); }
+
+  .output-log {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .output-log::-webkit-scrollbar { width: 3px; }
+  .output-log::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .log-line { margin-bottom: 2px; display: flex; gap: 8px; }
+  .log-line .ts { color: #334155; flex-shrink: 0; }
+  .log-line.info .msg { color: #94a3b8; }
+  .log-line.success .msg { color: var(--green); }
+  .log-line.error .msg { color: var(--red); }
+  .log-line.warn .msg { color: var(--yellow); }
+  .log-line.recv .msg { color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<div class="titlebar">
+  <div class="dot r"></div>
+  <div class="dot y"></div>
+  <div class="dot g"></div>
+  <span class="title">SS Executor</span>
+  <div class="status-pill disconnected" id="statusPill">
+    <div class="dot-live"></div>
+    <span id="statusText">Disconnected</span>
+  </div>
+</div>
+
+<div class="tabs-bar" id="tabsBar">
+  <div class="new-tab" id="newTabBtn" title="New tab">+</div>
+</div>
+
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Quick Scripts</div>
+      <div class="sidebar-item" data-script="getplrs"><span class="icon">👥</span> Get Players</div>
+      <div class="sidebar-item" data-script="kill"><span class="icon">💀</span> Kill All</div>
+      <div class="sidebar-item" data-script="print"><span class="icon">🖨️</span> Print Test</div>
+      <div class="sidebar-item" data-script="speed"><span class="icon">⚡</span> Speed All</div>
+      <div class="sidebar-item" data-script="noclip"><span class="icon">👻</span> Noclip</div>
+      <div class="sidebar-item" data-script="rejoin"><span class="icon">🔄</span> Rejoin</div>
+    </div>
+    <div class="sidebar-label" style="padding: 10px 12px 4px;">Saved</div>
+    <div class="sidebar-scripts" id="savedScripts"></div>
+  </div>
+
+  <div class="editor-area">
+    <div class="editor-wrapper" id="editorWrapper">
+      <div class="line-numbers" id="lineNumbers">1</div>
+      <textarea class="editor" id="editor" spellcheck="false" autocorrect="off" autocomplete="off" placeholder="-- Enter Lua script here..."></textarea>
+      <div class="autocomplete-box" id="autocompleteBox"></div>
+    </div>
+
+    <div class="output-pane">
+      <div class="output-header">
+        <span>Output</span>
+        <span class="clear-btn" id="clearLog">clear</span>
+      </div>
+      <div class="output-log" id="outputLog"></div>
+    </div>
+
+    <div class="toolbar">
+      <input class="ws-input" id="wsUrl" type="text" placeholder="ws://localhost:8080" value="ws://localhost:8080">
+      <button class="btn btn-connect" id="connectBtn">⚡ Connect</button>
+      <div class="spacer"></div>
+      <button class="btn btn-clear" id="clearBtn">Clear</button>
+      <button class="btn btn-execute" id="execBtn">▶ Execute</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const COMPLETIONS = [
+  { label: "game", tag: "global" },
+  { label: "game.Players", tag: "service" },
+  { label: "game.Workspace", tag: "service" },
+  { label: "game.ReplicatedStorage", tag: "service" },
+  { label: "game.ServerStorage", tag: "service" },
+  { label: "game.ServerScriptService", tag: "service" },
+  { label: "game.GetService", tag: "func" },
+  { label: "game.Players:GetPlayers()", tag: "func" },
+  { label: "game.Players.LocalPlayer", tag: "prop" },
+  { label: "workspace", tag: "global" },
+  { label: "task.wait", tag: "func" },
+  { label: "task.spawn", tag: "func" },
+  { label: "task.delay", tag: "func" },
+  { label: "pcall", tag: "func" },
+  { label: "xpcall", tag: "func" },
+  { label: "pairs", tag: "func" },
+  { label: "ipairs", tag: "func" },
+  { label: "tostring", tag: "func" },
+  { label: "tonumber", tag: "func" },
+  { label: "type", tag: "func" },
+  { label: "print", tag: "func" },
+  { label: "warn", tag: "func" },
+  { label: "error", tag: "func" },
+  { label: "Instance.new", tag: "func" },
+  { label: "Vector3.new", tag: "func" },
+  { label: "CFrame.new", tag: "func" },
+  { label: "Color3.new", tag: "func" },
+  { label: "Color3.fromRGB", tag: "func" },
+  { label: "UDim2.new", tag: "func" },
+  { label: "TweenInfo.new", tag: "func" },
+  { label: "game:GetService(\"Players\")", tag: "snippet" },
+  { label: "game:GetService(\"RunService\")", tag: "snippet" },
+  { label: "game:GetService(\"TweenService\")", tag: "snippet" },
+  { label: "game:GetService(\"HttpService\")", tag: "snippet" },
+  { label: "for _, v in pairs()", tag: "snippet" },
+  { label: "for i, v in ipairs()", tag: "snippet" },
+  { label: "local Players = game:GetService(\"Players\")", tag: "snippet" },
+  { label: "local RunService = game:GetService(\"RunService\")", tag: "snippet" },
+  { label: ":FindFirstChild()", tag: "method" },
+  { label: ":FindFirstChildOfClass()", tag: "method" },
+  { label: ":WaitForChild()", tag: "method" },
+  { label: ":GetChildren()", tag: "method" },
+  { label: ":GetDescendants()", tag: "method" },
+  { label: ":IsA()", tag: "method" },
+  { label: ":Destroy()", tag: "method" },
+  { label: ":Clone()", tag: "method" },
+  { label: ":FireAllClients()", tag: "method" },
+  { label: ":FireClient()", tag: "method" },
+  { label: ":InvokeClient()", tag: "method" },
+  { label: "humanoid.WalkSpeed", tag: "prop" },
+  { label: "humanoid.JumpPower", tag: "prop" },
+  { label: "humanoid.Health", tag: "prop" },
+  { label: "humanoid.MaxHealth", tag: "prop" },
+];
+
+const QUICK_SCRIPTS = {
+  getplrs: `local Players = game:GetService("Players")\n\nfor _, player in pairs(Players:GetPlayers()) do\n\tprint(player.Name, player.UserId)\nend`,
+  kill: `local Players = game:GetService("Players")\n\nfor _, player in pairs(Players:GetPlayers()) do\n\tlocal char = player.Character\n\tif char then\n\t\tlocal hum = char:FindFirstChildOfClass("Humanoid")\n\t\tif hum then\n\t\t\thum.Health = 0\n\t\tend\n\tend\nend`,
+  print: `print("Hello from ServerSide!")\nwarn("This is a warning")\nprint(game.PlaceId, game.JobId)`,
+  speed: `local Players = game:GetService("Players")\n\nfor _, player in pairs(Players:GetPlayers()) do\n\tlocal char = player.Character\n\tif char then\n\t\tlocal hum = char:FindFirstChildOfClass("Humanoid")\n\t\tif hum then\n\t\t\thum.WalkSpeed = 100\n\t\tend\n\tend\nend`,
+  noclip: `local Players = game:GetService("Players")\nlocal RunService = game:GetService("RunService")\n\nfor _, player in pairs(Players:GetPlayers()) do\n\tlocal char = player.Character\n\tif char then\n\t\tfor _, part in pairs(char:GetDescendants()) do\n\t\t\tif part:IsA("BasePart") then\n\t\t\t\tpart.CanCollide = false\n\t\t\tend\n\t\tend\n\tend\nend`,
+  rejoin: `game:GetService("TeleportService"):Teleport(game.PlaceId)`,
+};
+
+let tabs = [];
+let activeTab = null;
+let tabCounter = 0;
+let ws = null;
+let acSelected = -1;
+let acItems = [];
+
+function createTab(name, content) {
+  const id = ++tabCounter;
+  const tab = { id, name: name || `tab${id}`, content: content || "" };
+  tabs.push(tab);
+  renderTabs();
+  switchTab(id);
+  return tab;
+}
+
+function renderTabs() {
+  const bar = document.getElementById("tabsBar");
+  bar.innerHTML = "";
+
+  tabs.forEach(t => {
+    const el = document.createElement("div");
+    el.className = "tab" + (activeTab === t.id ? " active" : "");
+    el.innerHTML = `<span>${t.name}</span><span class="close" data-id="${t.id}">✕</span>`;
+    el.addEventListener("click", (e) => {
+      if (e.target.classList.contains("close")) {
+        closeTab(t.id);
+      } else {
+        switchTab(t.id);
+      }
+    });
+    bar.appendChild(el);
+  });
+
+  const addBtn = document.createElement("div");
+  addBtn.className = "new-tab";
+  addBtn.textContent = "+";
+  addBtn.title = "New tab";
+  addBtn.addEventListener("click", () => createTab());
+  bar.appendChild(addBtn);
+}
+
+function switchTab(id) {
+  if (activeTab !== null) {
+    const prev = tabs.find(t => t.id === activeTab);
+    if (prev) prev.content = document.getElementById("editor").value;
+  }
+  activeTab = id;
+  const t = tabs.find(t => t.id === id);
+  if (t) {
+    document.getElementById("editor").value = t.content;
+    updateLineNumbers();
+  }
+  renderTabs();
+}
+
+function closeTab(id) {
+  if (tabs.length === 1) {
+    tabs[0].content = "";
+    document.getElementById("editor").value = "";
+    updateLineNumbers();
+    return;
+  }
+  const idx = tabs.findIndex(t => t.id === id);
+  tabs.splice(idx, 1);
+  if (activeTab === id) {
+    const newIdx = Math.min(idx, tabs.length - 1);
+    activeTab = null;
+    switchTab(tabs[newIdx].id);
+  } else {
+    renderTabs();
+  }
+}
+
+function updateLineNumbers() {
+  const editor = document.getElementById("editor");
+  const lines = editor.value.split("\n").length;
+  const nums = Array.from({ length: lines }, (_, i) => i + 1).join("\n");
+  document.getElementById("lineNumbers").textContent = nums;
+}
+
+function syncScroll() {
+  const editor = document.getElementById("editor");
+  document.getElementById("lineNumbers").scrollTop = editor.scrollTop;
+}
+
+function log(msg, type = "info") {
+  const log = document.getElementById("outputLog");
+  const ts = new Date().toLocaleTimeString("en-US", { hour12: false });
+  const line = document.createElement("div");
+  line.className = `log-line ${type}`;
+  line.innerHTML = `<span class="ts">[${ts}]</span><span class="msg">${msg}</span>`;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
+}
+
+function connect() {
+  const url = document.getElementById("wsUrl").value.trim();
+  if (!url) return;
+
+  if (ws) {
+    ws.close();
+    ws = null;
+  }
+
+  try {
+    ws = new WebSocket(url);
+  } catch(e) {
+    log("Invalid WebSocket URL", "error");
+    return;
+  }
+
+  log(`Connecting to ${url}...`, "info");
+
+  ws.onopen = () => {
+    log("Connected to server", "success");
+    setStatus(true);
+    document.getElementById("connectBtn").textContent = "⚡ Connected";
+    document.getElementById("connectBtn").classList.add("active");
+  };
+
+  ws.onmessage = (e) => {
+    log(`← ${e.data}`, "recv");
+  };
+
+  ws.onerror = () => {
+    log("WebSocket error", "error");
+    setStatus(false);
+  };
+
+  ws.onclose = () => {
+    log("Connection closed", "warn");
+    setStatus(false);
+    document.getElementById("connectBtn").textContent = "⚡ Connect";
+    document.getElementById("connectBtn").classList.remove("active");
+    ws = null;
+  };
+}
+
+function setStatus(connected) {
+  const pill = document.getElementById("statusPill");
+  const txt = document.getElementById("statusText");
+  pill.className = `status-pill ${connected ? "connected" : "disconnected"}`;
+  txt.textContent = connected ? "Connected" : "Disconnected";
+}
+
+function execute() {
+  const editor = document.getElementById("editor");
+  const code = editor.value.trim();
+  if (!code) { log("Nothing to execute", "warn"); return; }
+
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    log("Not connected to server", "error");
+    return;
+  }
+
+  try {
+    ws.send(JSON.stringify({ type: "execute", script: code }));
+    log(`Sent ${code.split("\n").length} line(s)`, "success");
+  } catch(e) {
+    log("Failed to send: " + e.message, "error");
+  }
+}
+
+function showAutocomplete(word, cursorPos) {
+  const box = document.getElementById("autocompleteBox");
+  const editor = document.getElementById("editor");
+
+  const matches = COMPLETIONS.filter(c =>
+    c.label.toLowerCase().includes(word.toLowerCase()) && word.length >= 2
+  ).slice(0, 10);
+
+  if (!matches.length || !word) {
+    box.style.display = "none";
+    acItems = [];
+    return;
+  }
+
+  acItems = matches;
+  acSelected = -1;
+
+  box.innerHTML = "";
+  matches.forEach((m, i) => {
+    const item = document.createElement("div");
+    item.className = "autocomplete-item";
+    item.innerHTML = `<span>${m.label}</span><span class="tag">${m.tag}</span>`;
+    item.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      applyCompletion(m.label, word);
+    });
+    box.appendChild(item);
+  });
+
+  const rect = editor.getBoundingClientRect();
+  const wrapRect = document.getElementById("editorWrapper").getBoundingClientRect();
+  const lineHeight = 19.2;
+  const lines = editor.value.substring(0, editor.selectionStart).split("\n");
+  const lineNum = lines.length;
+  const lineOff = lineNum * lineHeight;
+
+  box.style.display = "block";
+  box.style.left = "52px";
+  box.style.top = (lineOff + 14) + "px";
+}
+
+function applyCompletion(label, word) {
+  const editor = document.getElementById("editor");
+  const pos = editor.selectionStart;
+  const text = editor.value;
+  const start = pos - word.length;
+  editor.value = text.substring(0, start) + label + text.substring(pos);
+  editor.selectionStart = editor.selectionEnd = start + label.length;
+  document.getElementById("autocompleteBox").style.display = "none";
+  acItems = [];
+  updateLineNumbers();
+  editor.focus();
+}
+
+function getCurrentWord() {
+  const editor = document.getElementById("editor");
+  const pos = editor.selectionStart;
+  const text = editor.value.substring(0, pos);
+  const match = text.match(/[\w:.]+$/);
+  return match ? match[0] : "";
+}
+
+document.getElementById("editor").addEventListener("input", () => {
+  updateLineNumbers();
+  const word = getCurrentWord();
+  showAutocomplete(word);
+});
+
+document.getElementById("editor").addEventListener("scroll", syncScroll);
+
+document.getElementById("editor").addEventListener("keydown", (e) => {
+  const box = document.getElementById("autocompleteBox");
+  const items = box.querySelectorAll(".autocomplete-item");
+
+  if (box.style.display === "block" && items.length) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      acSelected = Math.min(acSelected + 1, items.length - 1);
+      items.forEach((el, i) => el.classList.toggle("selected", i === acSelected));
+      return;
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      acSelected = Math.max(acSelected - 1, 0);
+      items.forEach((el, i) => el.classList.toggle("selected", i === acSelected));
+      return;
+    }
+    if (e.key === "Tab" || e.key === "Enter") {
+      if (acSelected >= 0 && acItems[acSelected]) {
+        e.preventDefault();
+        applyCompletion(acItems[acSelected].label, getCurrentWord());
+        return;
+      }
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const editor = document.getElementById("editor");
+        const pos = editor.selectionStart;
+        editor.value = editor.value.substring(0, pos) + "\t" + editor.value.substring(pos);
+        editor.selectionStart = editor.selectionEnd = pos + 1;
+        updateLineNumbers();
+        return;
+      }
+    }
+    if (e.key === "Escape") {
+      box.style.display = "none";
+      acItems = [];
+      return;
+    }
+  }
+
+  if (e.key === "Tab") {
+    e.preventDefault();
+    const editor = document.getElementById("editor");
+    const pos = editor.selectionStart;
+    editor.value = editor.value.substring(0, pos) + "\t" + editor.value.substring(pos);
+    editor.selectionStart = editor.selectionEnd = pos + 1;
+    updateLineNumbers();
+  }
+});
+
+document.getElementById("editor").addEventListener("blur", () => {
+  setTimeout(() => {
+    document.getElementById("autocompleteBox").style.display = "none";
+  }, 150);
+});
+
+document.getElementById("execBtn").addEventListener("click", execute);
+document.getElementById("clearBtn").addEventListener("click", () => {
+  document.getElementById("editor").value = "";
+  updateLineNumbers();
+  if (activeTab !== null) {
+    const t = tabs.find(t => t.id === activeTab);
+    if (t) t.content = "";
+  }
+});
+document.getElementById("clearLog").addEventListener("click", () => {
+  document.getElementById("outputLog").innerHTML = "";
+});
+document.getElementById("connectBtn").addEventListener("click", connect);
+
+document.querySelectorAll(".sidebar-item[data-script]").forEach(el => {
+  el.addEventListener("click", () => {
+    const key = el.dataset.script;
+    const script = QUICK_SCRIPTS[key];
+    if (script) {
+      document.getElementById("editor").value = script;
+      updateLineNumbers();
+      if (activeTab !== null) {
+        const t = tabs.find(t => t.id === activeTab);
+        if (t) t.content = script;
+      }
+    }
+  });
+});
+
+createTab("main");
+log("Executor ready", "info");
+log("Enter WebSocket URL and click Connect", "info");
+</script>
+</body>
+</html>
